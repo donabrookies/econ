@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prontuário Eletrônico - Clínica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --primary-light: #e0f2fe;
+            --secondary: #64748b;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Utilities */
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .w-full { width: 100%; }
+        .text-center { text-align: center; }
+        .mt-4 { margin-top: 1rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+
+        /* Auth Container */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--background) 100%);
+        }
+
+        .auth-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-logo i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .auth-logo p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.2s;
+            background: var(--surface);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--background);
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #16a34a;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        /* Auth Toggle */
+        .auth-toggle {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .auth-toggle a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-toggle a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-logo i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .sidebar-logo span {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--background);
+            border-radius: var(--radius);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .sidebar-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .sidebar-avatar i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .sidebar-user-info h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .sidebar-user-info p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item:hover {
+            background: var(--background);
+            color: var(--text);
+        }
+
+        .nav-item.active {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .nav-item i {
+            width: 20px;
+        }
+
+        .sidebar-footer {
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-icon.blue {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .stat-icon.green {
+            background: #dcfce7;
+            color: var(--success);
+        }
+
+        .stat-icon.orange {
+            background: #fef3c7;
+            color: var(--warning);
+        }
+
+        .stat-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-info p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            background: var(--background);
+        }
+
+        tr:hover {
+            background: var(--background);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 9999px;
+        }
+
+        .badge-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-info {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        /* Profile Section */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-avatar-large i {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+
+        .profile-avatar-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            border: 3px solid var(--surface);
+        }
+
+        .profile-info h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-info p {
+            color: var(--text-muted);
+        }
+
+        /* Exams Grid */
+        .exams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .exam-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s;
+        }
+
+        .exam-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .exam-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #fef2f2;
+            color: #dc2626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .exam-info {
+            flex: 1;
+        }
+
+        .exam-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .exam-info p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .exam-download {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .exam-download:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal {
+            background: var(--surface);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--background);
+            color: var(--text);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Admin specific */
+        .admin-header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .admin-header h1 {
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .client-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .client-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .client-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .client-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .client-avatar i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .client-info {
+            flex: 1;
+        }
+
+        .client-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .client-info p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-muted);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            color: var(--text);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Alert */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .alert-info {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        /* File input */
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--border);
+        }
+
+        .empty-state h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                z-index: 100;
+                transition: left 0.3s;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-card {
+                padding: 1.5rem;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            width: 48px;
+            height: 48px;
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+
+        /* Search */
+        .search-box {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Section -->
+    <div id="auth-section" class="auth-container">
+        <!-- Login Form -->
+        <div id="login-form" class="auth-card">
+            <div class="auth-logo">
+                <i class="fas fa-hospital-user"></i>
+                <h1>Prontuário Eletrônico</h1>
+                <p>Acesse sua área do paciente</p>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">CPF</label>
+                    <input type="text" id="login-cpf" class="form-input" placeholder="000.000.000-00" required maxlength="14" oninput="formatCPF(this)">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="Digite sua senha" required>
+                </div>
+                <div id="login-error" class="alert alert-error hidden"></div>
+                <button type="submit" class="btn btn-primary btn-block" id="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </button>
+            </form>
+            <div class="auth-toggle">
+                <span>Não tem uma conta? </span>
+                <a href="#" onclick="showRegister()">Cadastre-se</a>
+            </div>
+            <div class="auth-toggle" style="border: none; padding-top: 0.5rem;">
+                <a href="#" onclick="showAdminLogin()" style="color: var(--text-muted); font-size: 0.875rem;">
+                    <i class="fas fa-lock"></i> Área Administrativa
+                </a>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div id="register-form" class="auth-card hidden">
+            <div class="auth-logo">
+                <i class="fas fa-user-plus"></i>
+                <h1>Criar Conta</h1>
+                <p>Cadastre-se no sistema</p>
+            </div>
+            <form onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label class="form-label">Nome Completo</label>
+                    <input type="text" id="register-name" class="form-input" placeholder="Seu nome completo" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">CPF</label>
+                    <input type="text" id="register-cpf" class="form-input" placeholder="000.000.000-00" required maxlength="14" oninput="formatCPF(this)">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Data de Nascimento</label>
+                    <input type="date" id="register-dob" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" id="register-password" class="form-input" placeholder="Crie uma senha" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirmar Senha</label>
+                    <input type="password" id="register-confirm" class="form-input" placeholder="Confirme sua senha" required>
+                </div>
+                <div id="register-error" class="alert alert-error hidden"></div>
+                <div id="register-success" class="alert alert-success hidden"></div>
+                <button type="submit" class="btn btn-primary btn-block" id="register-btn">
+                    <i class="fas fa-user-plus"></i> Cadastrar
+                </button>
+            </form>
+            <div class="auth-toggle">
+                <span>Já tem uma conta? </span>
+                <a href="#" onclick="showLogin()">Faça login</a>
+            </div>
+        </div>
+
+        <!-- Admin Login Form -->
+        <div id="admin-login-form" class="auth-card hidden">
+            <div class="auth-logo">
+                <i class="fas fa-user-shield"></i>
+                <h1>Área Administrativa</h1>
+                <p>Acesso restrito</p>
+            </div>
+            <form onsubmit="handleAdminLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Usuário</label>
+                    <input type="text" id="admin-user" class="form-input" placeholder="Usuário admin" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" id="admin-password" class="form-input" placeholder="Senha admin" required>
+                </div>
+                <div id="admin-login-error" class="alert alert-error hidden"></div>
+                <button type="submit" class="btn btn-primary btn-block" id="admin-login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Entrar como Admin
+                </button>
+            </form>
+            <div class="auth-toggle">
+                <a href="#" onclick="showLogin()">
+                    <i class="fas fa-arrow-left"></i> Voltar para login
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient Dashboard -->
+    <div id="patient-dashboard" class="dashboard hidden">
+        <div class="mobile-menu-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div id="sidebar-overlay" class="overlay hidden" onclick="toggleSidebar()"></div>
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <i class="fas fa-hospital-user"></i>
+                <span>Prontuário</span>
+            </div>
+            
+            <div class="sidebar-user">
+                <div class="sidebar-avatar" id="sidebar-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="sidebar-user-info">
+                    <h3 id="sidebar-name">Carregando...</h3>
+                    <p id="sidebar-cpf">000.000.000-00</p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-item active" onclick="showPatientSection('history')">
+                    <i class="fas fa-history"></i>
+                    <span>Histórico de Consultas</span>
+                </div>
+                <div class="nav-item" onclick="showPatientSection('exams')">
+                    <i class="fas fa-file-medical"></i>
+                    <span>Exames</span>
+                </div>
+                <div class="nav-item" onclick="showPatientSection('profile')">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Meu Perfil</span>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="nav-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair</span>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <!-- History Section -->
+            <section id="section-history">
+                <div class="page-header">
+                    <h1>Histórico de Consultas</h1>
+                    <p>Veja todas as suas consultas anteriores</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-total">0</h3>
+                            <p>Total de Consultas</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-file-medical-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-exams">0</h3>
+                            <p>Exames Realizados</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Consultas Recentes</h3>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Horário</th>
+                                    <th>Tipo de Consulta</th>
+                                    <th>Observações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body">
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        <div class="loading">
+                                            <div class="spinner"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exams Section -->
+            <section id="section-exams" class="hidden">
+                <div class="page-header">
+                    <h1>Meus Exames</h1>
+                    <p>Visualize e baixe seus exames</p>
+                </div>
+                
+                <div class="exams-grid" id="exams-grid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="section-profile" class="hidden">
+                <div class="page-header">
+                    <h1>Meu Perfil</h1>
+                    <p>Gerencie suas informações pessoais</p>
+                </div>
+                
+                <div class="card">
+                    <div class="profile-header">
+                        <div class="profile-avatar-large" id="profile-avatar-container">
+                            <i class="fas fa-user" id="profile-avatar-icon"></i>
+                            <img id="profile-avatar-img" class="hidden" src="" alt="Avatar">
+                            <label class="profile-avatar-upload">
+                                <i class="fas fa-camera"></i>
+                                <input type="file" accept="image/*" onchange="uploadAvatar(event)" style="display: none;">
+                            </label>
+                        </div>
+                        <div class="profile-info">
+                            <h2 id="profile-name">Carregando...</h2>
+                            <p id="profile-cpf">CPF: 000.000.000-00</p>
+                            <p id="profile-dob">Data de Nascimento: --/--/----</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="hidden">
+        <header class="admin-header">
+            <h1><i class="fas fa-user-shield"></i> Painel Administrativo</h1>
+            <button class="btn btn-secondary btn-sm" onclick="adminLogout()">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
+        </header>
+        
+        <main class="main-content" style="margin-left: 0;">
+            <div class="page-header">
+                <h1>Gerenciar Clientes</h1>
+                <p>Visualize e gerencie os cadastros dos pacientes</p>
+            </div>
+            
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="admin-search" placeholder="Buscar por nome ou CPF..." oninput="filterClients()">
+            </div>
+            
+            <div class="clients-grid" id="clients-grid">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Client Detail Modal -->
+    <div id="client-modal" class="modal-overlay hidden">
+        <div class="modal" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 id="modal-client-name">Detalhes do Cliente</h3>
+                <div class="modal-close" onclick="closeClientModal()">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <div class="tab active" onclick="showClientTab('info')">Informações</div>
+                    <div class="tab" onclick="showClientTab('history')">Histórico</div>
+                    <div class="tab" onclick="showClientTab('exams')">Exames</div>
+                </div>
+                
+                <!-- Info Tab -->
+                <div id="client-tab-info">
+                    <div class="profile-header" style="margin-bottom: 1rem;">
+                        <div class="profile-avatar-large" id="modal-client-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h2 id="modal-client-fullname">Nome</h2>
+                            <p id="modal-client-cpf">CPF: </p>
+                            <p id="modal-client-dob">Nascimento: </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Alterar Foto do Cliente</label>
+                        <div class="file-input-wrapper">
+                            <button class="btn btn-secondary btn-sm">
+                                <i class="fas fa-upload"></i> Enviar Foto
+                            </button>
+                            <input type="file" accept="image/*" onchange="adminUploadAvatar(event)">
+                        </div>
+                    </div>
+                    <button class="btn btn-danger btn-sm mt-4" onclick="deleteClient()">
+                        <i class="fas fa-trash"></i> Excluir Cliente
+                    </button>
+                </div>
+                
+                <!-- History Tab -->
+                <div id="client-tab-history" class="hidden">
+                    <button class="btn btn-primary btn-sm mb-4" onclick="showAddHistoryForm()">
+                        <i class="fas fa-plus"></i> Adicionar Consulta
+                    </button>
+                    <div id="add-history-form" class="card hidden" style="margin-bottom: 1rem;">
+                        <h4 style="margin-bottom: 1rem;">Nova Consulta</h4>
+                        <div class="form-group">
+                            <label class="form-label">Data</label>
+                            <input type="date" id="history-date" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Horário</label>
+                            <input type="time" id="history-time" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tipo de Consulta</label>
+                            <input type="text" id="history-type" class="form-input" placeholder="Ex: Consulta de rotina">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Observações</label>
+                            <textarea id="history-notes" class="form-input" rows="3" placeholder="Observações sobre a consulta"></textarea>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="btn btn-primary btn-sm" onclick="saveHistory()">Salvar</button>
+                            <button class="btn btn-secondary btn-sm" onclick="hideAddHistoryForm()">Cancelar</button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Horário</th>
+                                    <th>Tipo</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modal-history-table">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Exams Tab -->
+                <div id="client-tab-exams" class="hidden">
+                    <div class="card" style="margin-bottom: 1rem;">
+                        <h4 style="margin-bottom: 1rem;">Adicionar Exame</h4>
+                        <div class="form-group">
+                            <label class="form-label">Tipo de Exame</label>
+                            <select id="exam-type" class="form-input">
+                                <option value="">Selecione o tipo</option>
+                                <option value="Hemograma">Hemograma</option>
+                                <option value="Glicemia">Glicemia</option>
+                                <option value="Colesterol">Colesterol</option>
+                                <option value="Triglicerídeos">Triglicerídeos</option>
+                                <option value="Ureia">Ureia</option>
+                                <option value="Creatinina">Creatinina</option>
+                                <option value="TGO/TGP">TGO/TGP</option>
+                                <option value="TSH">TSH</option>
+                                <option value="T4 Livre">T4 Livre</option>
+                                <option value="PSA">PSA</option>
+                                <option value="Raio-X">Raio-X</option>
+                                <option value="Ultrassom">Ultrassom</option>
+                                <option value="Tomografia">Tomografia</option>
+                                <option value="Ressonância">Ressonância</option>
+                                <option value="Eletrocardiograma">Eletrocardiograma</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Arquivo do Exame (PDF)</label>
+                            <input type="file" id="exam-file" accept=".pdf" class="form-input">
+                        </div>
+                        <button class="btn btn-primary btn-sm" onclick="uploadExam()">
+                            <i class="fas fa-upload"></i> Enviar Exame
+                        </button>
+                    </div>
+                    <h4 style="margin-bottom: 1rem;">Exames do Paciente</h4>
+                    <div id="modal-exams-list">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURAÇÃO - ALTERE A URL DO SEU BACKEND
+        // ============================================
+        const API_URL = 'https://clinica-olive.vercel.app'; // Coloque aqui a URL do seu backend na Vercel
+        
+        // ============================================
+        // ESTADO DA APLICAÇÃO
+        // ============================================
+        let currentUser = null;
+        let currentClientId = null;
+        let allClients = [];
+
+        // ============================================
+        // UTILITÁRIOS
+        // ============================================
+        function formatCPF(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            input.value = value;
+        }
+
+        function validateCPF(cpf) {
+            cpf = cpf.replace(/\D/g, '');
+            if (cpf.length !== 11) return false;
+            if (/^(\d)\1+$/.test(cpf)) return false;
+            
+            let sum = 0;
+            for (let i = 0; i < 9; i++) {
+                sum += parseInt(cpf.charAt(i)) * (10 - i);
+            }
+            let remainder = (sum * 10) % 11;
+            if (remainder === 10 || remainder === 11) remainder = 0;
+            if (remainder !== parseInt(cpf.charAt(9))) return false;
+            
+            sum = 0;
+            for (let i = 0; i < 10; i++) {
+                sum += parseInt(cpf.charAt(i)) * (11 - i);
+            }
+            remainder = (sum * 10) % 11;
+            if (remainder === 10 || remainder === 11) remainder = 0;
+            if (remainder !== parseInt(cpf.charAt(10))) return false;
+            
+            return true;
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '--/--/----';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        function showError(elementId, message) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.classList.remove('hidden');
+        }
+
+        function hideError(elementId) {
+            document.getElementById(elementId).classList.add('hidden');
+        }
+
+        function showSuccess(elementId, message) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.classList.remove('hidden');
+        }
+
+        // ============================================
+        // NAVEGAÇÃO AUTH
+        // ============================================
+        function showLogin() {
+            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('register-form').classList.add('hidden');
+            document.getElementById('admin-login-form').classList.add('hidden');
+            hideError('login-error');
+        }
+
+        function showRegister() {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('register-form').classList.remove('hidden');
+            document.getElementById('admin-login-form').classList.add('hidden');
+            hideError('register-error');
+        }
+
+        function showAdminLogin() {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('register-form').classList.add('hidden');
+            document.getElementById('admin-login-form').classList.remove('hidden');
+            hideError('admin-login-error');
+        }
+
+        // ============================================
+        // AUTENTICAÇÃO PACIENTE
+        // ============================================
+        async function handleLogin(e) {
+            e.preventDefault();
+            hideError('login-error');
+            
+            const cpf = document.getElementById('login-cpf').value.replace(/\D/g, '');
+            const password = document.getElementById('login-password').value;
+            
+            const btn = document.getElementById('login-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+            
+            try {
+                const response = await fetch(`${API_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cpf, password })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Erro ao fazer login');
+                }
+                
+                currentUser = data.user;
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                
+                showPatientDashboard();
+            } catch (error) {
+                showError('login-error', error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            hideError('register-error');
+            document.getElementById('register-success').classList.add('hidden');
+            
+            const name = document.getElementById('register-name').value.trim();
+            const cpf = document.getElementById('register-cpf').value.replace(/\D/g, '');
+            const dob = document.getElementById('register-dob').value;
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm').value;
+            
+            if (!validateCPF(cpf)) {
+                showError('register-error', 'CPF inválido');
+                return;
+            }
+            
+            if (password !== confirm) {
+                showError('register-error', 'As senhas não coincidem');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('register-error', 'A senha deve ter pelo menos 6 caracteres');
+                return;
+            }
+            
+            const btn = document.getElementById('register-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cadastrando...';
+            
+            try {
+                const response = await fetch(`${API_URL}/api/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, cpf, dob, password })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Erro ao cadastrar');
+                }
+                
+                showSuccess('register-success', 'Cadastro realizado com sucesso! Faça login.');
+                document.getElementById('register-form').reset();
+                
+                setTimeout(() => {
+                    showLogin();
+                }, 2000);
+            } catch (error) {
+                showError('register-error', error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-user-plus"></i> Cadastrar';
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            document.getElementById('patient-dashboard').classList.add('hidden');
+            document.getElementById('auth-section').classList.remove('hidden');
+            showLogin();
+        }
+
+        // ============================================
+        // AUTENTICAÇÃO ADMIN
+        // ============================================
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            hideError('admin-login-error');
+            
+            const username = document.getElementById('admin-user').value;
+            const password = document.getElementById('admin-password').value;
+            
+            const btn = document.getElementById('admin-login-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Credenciais inválidas');
+                }
+                
+                localStorage.setItem('adminToken', data.token);
+                showAdminDashboard();
+            } catch (error) {
+                showError('admin-login-error', error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar como Admin';
+            }
+        }
+
+        function adminLogout() {
+            localStorage.removeItem('adminToken');
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            document.getElementById('auth-section').classList.remove('hidden');
+            showLogin();
+        }
+
+        // ============================================
+        // DASHBOARD PACIENTE
+        // ============================================
+        function showPatientDashboard() {
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('patient-dashboard').classList.remove('hidden');
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            
+            updateUserInfo();
+            loadPatientHistory();
+            loadPatientExams();
+        }
+
+        function updateUserInfo() {
+            if (!currentUser) return;
+            
+            const cpfFormatted = currentUser.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+            
+            document.getElementById('sidebar-name').textContent = currentUser.name;
+            document.getElementById('sidebar-cpf').textContent = cpfFormatted;
+            document.getElementById('profile-name').textContent = currentUser.name;
+            document.getElementById('profile-cpf').textContent = `CPF: ${cpfFormatted}`;
+            document.getElementById('profile-dob').textContent = `Data de Nascimento: ${formatDate(currentUser.dob)}`;
+            
+            if (currentUser.avatar_url) {
+                document.getElementById('sidebar-avatar').innerHTML = `<img src="${currentUser.avatar_url}" alt="Avatar">`;
+                document.getElementById('profile-avatar-icon').classList.add('hidden');
+                document.getElementById('profile-avatar-img').src = currentUser.avatar_url;
+                document.getElementById('profile-avatar-img').classList.remove('hidden');
+            }
+        }
+
+        function showPatientSection(section) {
+            document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            document.getElementById('section-history').classList.add('hidden');
+            document.getElementById('section-exams').classList.add('hidden');
+            document.getElementById('section-profile').classList.add('hidden');
+            
+            document.getElementById(`section-${section}`).classList.remove('hidden');
+            
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        }
+
+        async function loadPatientHistory() {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/patient/history`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                const tbody = document.getElementById('history-table-body');
+                
+                if (data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4">
+                                <div class="empty-state">
+                                    <i class="fas fa-calendar-times"></i>
+                                    <h3>Nenhuma consulta encontrada</h3>
+                                    <p>Você ainda não tem consultas registradas</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    tbody.innerHTML = data.map(item => `
+                        <tr>
+                            <td>${formatDate(item.date)}</td>
+                            <td>${item.time || '--:--'}</td>
+                            <td><span class="badge badge-info">${item.type}</span></td>
+                            <td>${item.notes || '-'}</td>
+                        </tr>
+                    `).join('');
+                }
+                
+                document.getElementById('stat-total').textContent = data.length;
+            } catch (error) {
+                console.error('Erro ao carregar histórico:', error);
+            }
+        }
+
+        async function loadPatientExams() {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/patient/exams`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                const grid = document.getElementById('exams-grid');
+                
+                if (data.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state" style="grid-column: 1 / -1;">
+                            <i class="fas fa-file-medical"></i>
+                            <h3>Nenhum exame encontrado</h3>
+                            <p>Você ainda não tem exames registrados</p>
+                        </div>
+                    `;
+                } else {
+                    grid.innerHTML = data.map(exam => `
+                        <div class="exam-card">
+                            <div class="exam-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="exam-info">
+                                <h4>${exam.type}</h4>
+                                <p>${formatDate(exam.created_at)}</p>
+                            </div>
+                            <div class="exam-download" onclick="downloadExam('${exam.file_url}', '${exam.type}')">
+                                <i class="fas fa-download"></i>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+                
+                document.getElementById('stat-exams').textContent = data.length;
+            } catch (error) {
+                console.error('Erro ao carregar exames:', error);
+            }
+        }
+
+        function downloadExam(url, name) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${name}.pdf`;
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        async function uploadAvatar(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            
+            reader.onload = async () => {
+                const base64 = reader.result;
+                const token = localStorage.getItem('token');
+                
+                try {
+                    const response = await fetch(`${API_URL}/api/patient/avatar`, {
+                        method: 'POST',
+                        headers: { 
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ avatar: base64 })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) throw new Error(data.error);
+                    
+                    currentUser.avatar_url = data.avatar_url;
+                    localStorage.setItem('user', JSON.stringify(currentUser));
+                    updateUserInfo();
+                } catch (error) {
+                    alert('Erro ao enviar foto: ' + error.message);
+                }
+            };
+        }
+
+        // ============================================
+        // DASHBOARD ADMIN
+        // ============================================
+        function showAdminDashboard() {
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('patient-dashboard').classList.add('hidden');
+            document.getElementById('admin-dashboard').classList.remove('hidden');
+            
+            loadClients();
+        }
+
+        async function loadClients() {
+            const token = localStorage.getItem('adminToken');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/clients`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                allClients = data;
+                renderClients(data);
+            } catch (error) {
+                console.error('Erro ao carregar clientes:', error);
+            }
+        }
+
+        function renderClients(clients) {
+            const grid = document.getElementById('clients-grid');
+            
+            if (clients.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-users"></i>
+                        <h3>Nenhum cliente encontrado</h3>
+                        <p>Não há clientes cadastrados</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = clients.map(client => {
+                const cpfFormatted = client.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+                return `
+                    <div class="client-card" onclick="openClientModal('${client.id}')">
+                        <div class="client-avatar">
+                            ${client.avatar_url 
+                                ? `<img src="${client.avatar_url}" alt="${client.name}">` 
+                                : '<i class="fas fa-user"></i>'}
+                        </div>
+                        <div class="client-info">
+                            <h4>${client.name}</h4>
+                            <p>${cpfFormatted}</p>
+                        </div>
+                        <i class="fas fa-chevron-right" style="color: var(--text-muted);"></i>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterClients() {
+            const search = document.getElementById('admin-search').value.toLowerCase();
+            const filtered = allClients.filter(client => 
+                client.name.toLowerCase().includes(search) || 
+                client.cpf.includes(search.replace(/\D/g, ''))
+            );
+            renderClients(filtered);
+        }
+
+        async function openClientModal(clientId) {
+            currentClientId = clientId;
+            const token = localStorage.getItem('adminToken');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/clients/${clientId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const client = await response.json();
+                
+                if (!response.ok) throw new Error(client.error);
+                
+                const cpfFormatted = client.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+                
+                document.getElementById('modal-client-name').textContent = client.name;
+                document.getElementById('modal-client-fullname').textContent = client.name;
+                document.getElementById('modal-client-cpf').textContent = `CPF: ${cpfFormatted}`;
+                document.getElementById('modal-client-dob').textContent = `Nascimento: ${formatDate(client.dob)}`;
+                
+                const avatarEl = document.getElementById('modal-client-avatar');
+                avatarEl.innerHTML = client.avatar_url 
+                    ? `<img src="${client.avatar_url}" alt="${client.name}">` 
+                    : '<i class="fas fa-user"></i>';
+                
+                document.getElementById('client-modal').classList.remove('hidden');
+                
+                showClientTab('info');
+                loadClientHistory();
+                loadClientExams();
+            } catch (error) {
+                alert('Erro ao carregar cliente: ' + error.message);
+            }
+        }
+
+        function closeClientModal() {
+            document.getElementById('client-modal').classList.add('hidden');
+            currentClientId = null;
+        }
+
+        function showClientTab(tab) {
+            // Remove active de todas as tabs
+            document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+            
+            // Adiciona active na tab clicada
+            if (event) {
+                event.target.classList.add('active');
+            } else {
+                // Se não houver evento, ativa a primeira tab
+                document.querySelector(`.tabs .tab:nth-child(${tab === 'info' ? 1 : tab === 'history' ? 2 : 3})`).classList.add('active');
+            }
+            
+            // Esconde todas as abas
+            document.getElementById('client-tab-info').classList.add('hidden');
+            document.getElementById('client-tab-history').classList.add('hidden');
+            document.getElementById('client-tab-exams').classList.add('hidden');
+            
+            // Mostra a aba selecionada
+            document.getElementById(`client-tab-${tab}`).classList.remove('hidden');
+        }
+
+        async function loadClientHistory() {
+            const token = localStorage.getItem('adminToken');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/clients/${currentClientId}/history`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                const tbody = document.getElementById('modal-history-table');
+                
+                if (data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="text-center">Nenhuma consulta registrada</td>
+                        </tr>
+                    `;
+                } else {
+                    tbody.innerHTML = data.map(item => `
+                        <tr>
+                            <td>${formatDate(item.date)}</td>
+                            <td>${item.time || '--:--'}</td>
+                            <td>${item.type}</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="deleteHistory('${item.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Erro ao carregar histórico:', error);
+            }
+        }
+
+        function showAddHistoryForm() {
+            document.getElementById('add-history-form').classList.remove('hidden');
+        }
+
+        function hideAddHistoryForm() {
+            document.getElementById('add-history-form').classList.add('hidden');
+        }
+
+        async function saveHistory() {
+            const token = localStorage.getItem('adminToken');
+            
+            const date = document.getElementById('history-date').value;
+            const time = document.getElementById('history-time').value;
+            const type = document.getElementById('history-type').value;
+            const notes = document.getElementById('history-notes').value;
+            
+            if (!date || !type) {
+                alert('Preencha a data e o tipo da consulta');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/clients/${currentClientId}/history`, {
+                    method: 'POST',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ date, time, type, notes })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                hideAddHistoryForm();
+                document.getElementById('history-date').value = '';
+                document.getElementById('history-time').value = '';
+                document.getElementById('history-type').value = '';
+                document.getElementById('history-notes').value = '';
+                
+                loadClientHistory();
+            } catch (error) {
+                alert('Erro ao salvar consulta: ' + error.message);
+            }
+        }
+
+        async function deleteHistory(historyId) {
+            if (!confirm('Tem certeza que deseja excluir esta consulta?')) return;
+            
+            const token = localStorage.getItem('adminToken');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/history/${historyId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.error);
+                }
+                
+                loadClientHistory();
+            } catch (error) {
+                alert('Erro ao excluir consulta: ' + error.message);
+            }
+        }
+
+        async function loadClientExams() {
+            const token = localStorage.getItem('adminToken');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/clients/${currentClientId}/exams`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                const container = document.getElementById('modal-exams-list');
+                
+                if (data.length === 0) {
+                    container.innerHTML = `<p style="color: var(--text-muted);">Nenhum exame registrado</p>`;
+                } else {
+                    container.innerHTML = data.map(exam => `
+                        <div class="exam-card" style="margin-bottom: 0.5rem;">
+                            <div class="exam-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="exam-info">
+                                <h4>${exam.type}</h4>
+                                <p>${formatDate(exam.created_at)}</p>
+                            </div>
+                            <button class="btn btn-danger btn-sm" onclick="deleteExam('${exam.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Erro ao carregar exames:', error);
+            }
+        }
+
+        async function uploadExam() {
+            const token = localStorage.getItem('adminToken');
+            const type = document.getElementById('exam-type').value;
+            const fileInput = document.getElementById('exam-file');
+            const file = fileInput.files[0];
+            
+            if (!type || !file) {
+                alert('Selecione o tipo e o arquivo do exame');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            
+            reader.onload = async () => {
+                const base64 = reader.result;
+                
+                try {
+                    const response = await fetch(`${API_URL}/api/admin/clients/${currentClientId}/exams`, {
+                        method: 'POST',
+                        headers: { 
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ 
+                            type: type,
+                            file: base64 
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) throw new Error(data.error);
+                    
+                    document.getElementById('exam-type').value = '';
+                    fileInput.value = '';
+                    
+                    loadClientExams();
+                    alert('Exame enviado com sucesso!');
+                } catch (error) {
+                    alert('Erro ao enviar exame: ' + error.message);
+                }
+            };
+        }
+
+        async function deleteExam(examId) {
+            if (!confirm('Tem certeza que deseja excluir este exame?')) return;
+            
+            const token = localStorage.getItem('adminToken');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/exams/${examId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.error);
+                }
+                
+                loadClientExams();
+            } catch (error) {
+                alert('Erro ao excluir exame: ' + error.message);
+            }
+        }
+
+        async function adminUploadAvatar(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            
+            reader.onload = async () => {
+                const base64 = reader.result;
+                const token = localStorage.getItem('adminToken');
+                
+                try {
+                    const response = await fetch(`${API_URL}/api/admin/clients/${currentClientId}/avatar`, {
+                        method: 'POST',
+                        headers: { 
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ avatar: base64 })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) throw new Error(data.error);
+                    
+                    const avatarEl = document.getElementById('modal-client-avatar');
+                    avatarEl.innerHTML = `<img src="${data.avatar_url}" alt="Avatar">`;
+                    
+                    loadClients();
+                } catch (error) {
+                    alert('Erro ao enviar foto: ' + error.message);
+                }
+            };
+        }
+
+        async function deleteClient() {
+            if (!confirm('Tem certeza que deseja excluir este cliente? Esta ação não pode ser desfeita.')) return;
+            
+            const token = localStorage.getItem('adminToken');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/clients/${currentClientId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.error);
+                }
+                
+                closeClientModal();
+                loadClients();
+            } catch (error) {
+                alert('Erro ao excluir cliente: ' + error.message);
+            }
+        }
+
+        // ============================================
+        // MOBILE
+        // ============================================
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('hidden');
+        }
+
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
+        function checkAuth() {
+            // Verifica se é rota admin
+            if (window.location.hash === '#/admin' || window.location.pathname === '/admin') {
+                const adminToken = localStorage.getItem('adminToken');
+                if (adminToken) {
+                    showAdminDashboard();
+                } else {
+                    showAdminLogin();
+                }
+                return;
+            }
+            
+            // Verifica login de paciente
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            
+            if (token && user) {
+                currentUser = JSON.parse(user);
+                showPatientDashboard();
+            }
+        }
+
+        // Event listeners
+        window.addEventListener('hashchange', checkAuth);
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</body>
+</html> 
