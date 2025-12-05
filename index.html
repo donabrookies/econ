@@ -475,6 +475,11 @@
             color: var(--primary-dark);
         }
 
+        .badge-danger {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
         /* Profile Section */
         .profile-header {
             display: flex;
@@ -741,6 +746,76 @@
             gap: 1rem;
         }
 
+        /* Doctor Cards */
+        .doctor-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .doctor-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .doctor-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .doctor-avatar i {
+            font-size: 1.5rem;
+            color: #3b82f6;
+        }
+
+        .doctor-info {
+            flex: 1;
+        }
+
+        .doctor-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .doctor-info p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .doctor-status {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+        }
+
+        .doctor-status.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .doctor-status.inactive {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
         /* Tabs */
         .tabs {
             display: flex;
@@ -851,6 +926,158 @@
             color: var(--text);
         }
 
+        /* Appointment Cards */
+        .appointment-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .appointment-card.cancelled {
+            border-left-color: var(--danger);
+            opacity: 0.7;
+        }
+
+        .appointment-card.completed {
+            border-left-color: var(--success);
+        }
+
+        .appointment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .appointment-time {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .appointment-date {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .appointment-doctor {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .appointment-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        /* Work Days Grid */
+        .work-days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .work-day-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1rem;
+            border-left: 4px solid var(--success);
+        }
+
+        .work-day-date {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .work-day-time {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Calendar */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-day {
+            padding: 0.75rem;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calendar-day:hover {
+            background: var(--background);
+        }
+
+        .calendar-day.available {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .calendar-day.selected {
+            background: var(--primary);
+            color: white;
+        }
+
+        .calendar-day.past {
+            color: var(--border);
+            cursor: not-allowed;
+        }
+
+        .calendar-day-header {
+            font-weight: 600;
+            color: var(--text-muted);
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        /* Time Slots */
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .time-slot {
+            padding: 0.75rem;
+            text-align: center;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .time-slot:hover {
+            border-color: var(--primary);
+        }
+
+        .time-slot.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .time-slot.booked {
+            background: var(--background);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            border-color: var(--border);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .sidebar {
@@ -883,6 +1110,15 @@
 
             .auth-card {
                 padding: 1.5rem;
+            }
+
+            .calendar {
+                grid-template-columns: repeat(7, 1fr);
+                font-size: 0.875rem;
+            }
+
+            .calendar-day {
+                padding: 0.5rem;
             }
         }
 
@@ -938,6 +1174,33 @@
             outline: none;
             border-color: var(--primary);
         }
+
+        /* Admin Navigation */
+        .admin-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .admin-nav-item {
+            padding: 0.75rem 1.5rem;
+            background: var(--background);
+            border-radius: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .admin-nav-item:hover {
+            background: var(--border);
+        }
+
+        .admin-nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -984,23 +1247,27 @@
             </div>
             <form onsubmit="handleRegister(event)">
                 <div class="form-group">
-                    <label class="form-label">Nome Completo</label>
+                    <label class="form-label">Nome Completo *</label>
                     <input type="text" id="register-name" class="form-input" placeholder="Seu nome completo" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">CPF</label>
+                    <label class="form-label">CPF *</label>
                     <input type="text" id="register-cpf" class="form-input" placeholder="000.000.000-00" required maxlength="14" oninput="formatCPF(this)">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Data de Nascimento</label>
+                    <label class="form-label">Data de Nascimento *</label>
                     <input type="date" id="register-dob" class="form-input" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Senha</label>
+                    <label class="form-label">WhatsApp *</label>
+                    <input type="text" id="register-whatsapp" class="form-input" placeholder="(11) 99999-9999" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Senha *</label>
                     <input type="password" id="register-password" class="form-input" placeholder="Crie uma senha" required minlength="6">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Confirmar Senha</label>
+                    <label class="form-label">Confirmar Senha *</label>
                     <input type="password" id="register-confirm" class="form-input" placeholder="Confirme sua senha" required>
                 </div>
                 <div id="register-error" class="alert alert-error hidden"></div>
@@ -1076,6 +1343,14 @@
                     <i class="fas fa-file-medical"></i>
                     <span>Exames</span>
                 </div>
+                <div class="nav-item" onclick="showPatientSection('appointments')">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Meus Agendamentos</span>
+                </div>
+                <div class="nav-item" onclick="showPatientSection('schedule')">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Agendar Consulta</span>
+                </div>
                 <div class="nav-item" onclick="showPatientSection('profile')">
                     <i class="fas fa-user-circle"></i>
                     <span>Meu Perfil</span>
@@ -1115,6 +1390,15 @@
                         <div class="stat-info">
                             <h3 id="stat-exams">0</h3>
                             <p>Exames Realizados</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-appointments">0</h3>
+                            <p>Agendamentos</p>
                         </div>
                     </div>
                 </div>
@@ -1161,6 +1445,80 @@
                 </div>
             </section>
 
+            <!-- Appointments Section -->
+            <section id="section-appointments" class="hidden">
+                <div class="page-header">
+                    <h1>Meus Agendamentos</h1>
+                    <p>Gerencie suas consultas agendadas</p>
+                </div>
+                
+                <div id="appointments-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Schedule Appointment Section -->
+            <section id="section-schedule" class="hidden">
+                <div class="page-header">
+                    <h1>Agendar Consulta</h1>
+                    <p>Escolha um médico e agende sua consulta</p>
+                </div>
+                
+                <div class="card">
+                    <h3 style="margin-bottom: 1rem;">Passo 1: Escolha um médico</h3>
+                    <div class="form-group">
+                        <label class="form-label">Especialidade</label>
+                        <select id="specialty-filter" class="form-input" onchange="filterDoctors()">
+                            <option value="">Todas as especialidades</option>
+                        </select>
+                    </div>
+                    
+                    <div id="doctors-list" class="flex flex-col gap-4 mt-4">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="schedule-details" class="hidden">
+                    <div class="card mt-4">
+                        <h3>Passo 2: Escolha a data</h3>
+                        <div id="calendar-container" class="mt-4"></div>
+                    </div>
+                    
+                    <div class="card mt-4">
+                        <h3>Passo 3: Informações da consulta</h3>
+                        <div id="time-slots-container" class="mt-4">
+                            <div class="alert alert-info">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong>Horário de atendimento:</strong>
+                                    <p>O médico atenderá durante todo o horário de expediente na data selecionada.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mt-4">
+                            <label class="form-label">WhatsApp para contato *</label>
+                            <input type="text" id="appointment-whatsapp" class="form-input" placeholder="(11) 99999-9999" required>
+                        </div>
+                        <div class="form-group mt-4">
+                            <label class="form-label">Observações (opcional)</label>
+                            <textarea id="appointment-notes" class="form-input" rows="3" placeholder="Alguma observação importante para a consulta..."></textarea>
+                        </div>
+                        <div class="flex gap-4 mt-4">
+                            <button class="btn btn-primary" onclick="confirmAppointment()">
+                                <i class="fas fa-calendar-check"></i> Confirmar Agendamento
+                            </button>
+                            <button class="btn btn-secondary" onclick="cancelSchedule()">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Profile Section -->
             <section id="section-profile" class="hidden">
                 <div class="page-header">
@@ -1182,6 +1540,7 @@
                             <h2 id="profile-name">Carregando...</h2>
                             <p id="profile-cpf">CPF: 000.000.000-00</p>
                             <p id="profile-dob">Data de Nascimento: --/--/----</p>
+                            <p id="profile-whatsapp">WhatsApp: --</p>
                         </div>
                     </div>
                 </div>
@@ -1199,21 +1558,163 @@
         </header>
         
         <main class="main-content" style="margin-left: 0;">
-            <div class="page-header">
-                <h1>Gerenciar Clientes</h1>
-                <p>Visualize e gerencie os cadastros dos pacientes</p>
-            </div>
-            
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="admin-search" placeholder="Buscar por nome ou CPF..." oninput="filterClients()">
-            </div>
-            
-            <div class="clients-grid" id="clients-grid">
-                <div class="loading">
-                    <div class="spinner"></div>
+            <div class="admin-nav">
+                <div class="admin-nav-item active" onclick="showAdminSection('clients')">
+                    <i class="fas fa-users"></i> Clientes
+                </div>
+                <div class="admin-nav-item" onclick="showAdminSection('doctors')">
+                    <i class="fas fa-user-md"></i> Médicos
+                </div>
+                <div class="admin-nav-item" onclick="showAdminSection('appointments')">
+                    <i class="fas fa-calendar-alt"></i> Agendamentos
+                </div>
+                <div class="admin-nav-item" onclick="showAdminSection('work-days')">
+                    <i class="fas fa-calendar-day"></i> Dias de Trabalho
                 </div>
             </div>
+            
+            <!-- Clients Section -->
+            <section id="admin-section-clients">
+                <div class="page-header">
+                    <h1>Gerenciar Clientes</h1>
+                    <p>Visualize e gerencie os cadastros dos pacientes</p>
+                </div>
+                
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="admin-search" placeholder="Buscar por nome ou CPF..." oninput="filterClients()">
+                </div>
+                
+                <div class="clients-grid" id="clients-grid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Doctors Section -->
+            <section id="admin-section-doctors" class="hidden">
+                <div class="page-header">
+                    <h1>Gerenciar Médicos</h1>
+                    <p>Cadastre e gerencie os médicos da clínica</p>
+                </div>
+                
+                <button class="btn btn-primary mb-4" onclick="showAddDoctorForm()">
+                    <i class="fas fa-plus"></i> Adicionar Médico
+                </button>
+                
+                <div id="add-doctor-form" class="card hidden" style="margin-bottom: 2rem;">
+                    <h3>Adicionar Novo Médico</h3>
+                    <div class="form-group">
+                        <label class="form-label">Nome do Médico *</label>
+                        <input type="text" id="doctor-name" class="form-input" placeholder="Ex: Dr. João Silva" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Especialidade *</label>
+                        <input type="text" id="doctor-specialty" class="form-input" placeholder="Ex: Cardiologista, Pediatra, etc." required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Foto do Médico (opcional)</label>
+                        <div class="file-input-wrapper">
+                            <button class="btn btn-secondary btn-sm" type="button">
+                                <i class="fas fa-upload"></i> Escolher Foto
+                            </button>
+                            <input type="file" id="doctor-avatar" accept="image/*" onchange="previewDoctorAvatar(event)">
+                        </div>
+                        <div id="doctor-avatar-preview" class="hidden" style="margin-top: 0.5rem;">
+                            <img id="doctor-avatar-img" src="" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Descrição (o que o médico faz)</label>
+                        <textarea id="doctor-description" class="form-input" rows="3" placeholder="Descreva as atividades do médico..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Telefone (opcional)</label>
+                        <input type="text" id="doctor-phone" class="form-input" placeholder="(11) 99999-9999">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email (opcional)</label>
+                        <input type="email" id="doctor-email" class="form-input" placeholder="medico@clinica.com">
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-primary" type="button" onclick="saveDoctor()">Salvar Médico</button>
+                        <button class="btn btn-secondary" type="button" onclick="hideAddDoctorForm()">Cancelar</button>
+                    </div>
+                </div>
+                
+                <div id="doctors-admin-list" class="flex flex-col gap-4">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Appointments Section -->
+            <section id="admin-section-appointments" class="hidden">
+                <div class="page-header">
+                    <h1>Agendamentos</h1>
+                    <p>Gerencie todos os agendamentos da clínica</p>
+                </div>
+                
+                <div class="flex gap-4 mb-4">
+                    <select id="appointment-filter" class="form-input" style="width: auto;" onchange="loadAdminAppointments()">
+                        <option value="">Todos os status</option>
+                        <option value="agendado">Agendados</option>
+                        <option value="cancelado">Cancelados</option>
+                        <option value="realizado">Realizados</option>
+                    </select>
+                    <input type="date" id="appointment-date-filter" class="form-input" style="width: auto;" onchange="loadAdminAppointments()">
+                </div>
+                
+                <div id="admin-appointments-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Work Days Section -->
+            <section id="admin-section-work-days" class="hidden">
+                <div class="page-header">
+                    <h1>Dias de Trabalho</h1>
+                    <p>Defina os dias e horários de trabalho dos médicos</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Adicionar Dia de Trabalho</h3>
+                    <div class="form-group">
+                        <label class="form-label">Médico *</label>
+                        <select id="work-day-doctor" class="form-input" required>
+                            <option value="">Selecione um médico</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Data do Trabalho *</label>
+                        <input type="date" id="work-day-date" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Horário de Início *</label>
+                        <input type="time" id="work-day-start" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Horário de Término *</label>
+                        <input type="time" id="work-day-end" class="form-input" required>
+                    </div>
+                    <button class="btn btn-primary" onclick="addWorkDay()">
+                        <i class="fas fa-plus"></i> Adicionar Dia de Trabalho
+                    </button>
+                </div>
+                
+                <div class="card mt-4">
+                    <h3>Dias de Trabalho Cadastrados</h3>
+                    <div id="work-days-list" class="mt-4">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -1243,6 +1744,7 @@
                             <h2 id="modal-client-fullname">Nome</h2>
                             <p id="modal-client-cpf">CPF: </p>
                             <p id="modal-client-dob">Nascimento: </p>
+                            <p id="modal-client-whatsapp">WhatsApp: </p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -1345,6 +1847,64 @@
         </div>
     </div>
 
+    <!-- Doctor Detail Modal -->
+    <div id="doctor-modal" class="modal-overlay hidden">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 id="modal-doctor-name">Detalhes do Médico</h3>
+                <div class="modal-close" onclick="closeDoctorModal()">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nome</label>
+                    <input type="text" id="edit-doctor-name" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Especialidade</label>
+                    <input type="text" id="edit-doctor-specialty" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Foto do Médico</label>
+                    <div class="file-input-wrapper">
+                        <button class="btn btn-secondary btn-sm" type="button">
+                            <i class="fas fa-upload"></i> Alterar Foto
+                        </button>
+                        <input type="file" id="edit-doctor-avatar" accept="image/*" onchange="previewEditDoctorAvatar(event)">
+                    </div>
+                    <div id="edit-doctor-avatar-preview" class="hidden" style="margin-top: 0.5rem;">
+                        <img id="edit-doctor-avatar-img" src="" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Descrição</label>
+                    <textarea id="edit-doctor-description" class="form-input" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Telefone (opcional)</label>
+                    <input type="text" id="edit-doctor-phone" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email (opcional)</label>
+                    <input type="email" id="edit-doctor-email" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select id="edit-doctor-active" class="form-input">
+                        <option value="true">Ativo</option>
+                        <option value="false">Inativo</option>
+                    </select>
+                </div>
+                <div class="flex gap-2 mt-4">
+                    <button class="btn btn-primary" onclick="updateDoctor()">Salvar Alterações</button>
+                    <button class="btn btn-danger" onclick="deleteDoctor()">Excluir Médico</button>
+                    <button class="btn btn-secondary" onclick="closeDoctorModal()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ============================================
         // CONFIGURAÇÃO - ALTERE A URL DO SEU BACKEND
@@ -1357,6 +1917,12 @@
         let currentUser = null;
         let currentClientId = null;
         let allClients = [];
+        let allDoctors = [];
+        let allSpecialties = [];
+        let selectedDoctor = null;
+        let selectedDate = null;
+        let doctorWorkDays = [];
+        let bookedSlots = [];
 
         // ============================================
         // UTILITÁRIOS
@@ -1398,6 +1964,11 @@
             if (!dateStr) return '--/--/----';
             const date = new Date(dateStr);
             return date.toLocaleDateString('pt-BR');
+        }
+
+        function formatTime(timeStr) {
+            if (!timeStr) return '--:--';
+            return timeStr.substring(0, 5);
         }
 
         function showError(elementId, message) {
@@ -1490,6 +2061,7 @@
             const dob = document.getElementById('register-dob').value;
             const password = document.getElementById('register-password').value;
             const confirm = document.getElementById('register-confirm').value;
+            const whatsapp = document.getElementById('register-whatsapp').value.trim();
             
             if (!validateCPF(cpf)) {
                 showError('register-error', 'CPF inválido');
@@ -1506,6 +2078,11 @@
                 return;
             }
             
+            if (!whatsapp) {
+                showError('register-error', 'WhatsApp é obrigatório');
+                return;
+            }
+            
             const btn = document.getElementById('register-btn');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cadastrando...';
@@ -1514,7 +2091,7 @@
                 const response = await fetch(`${API_URL}/api/auth/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, cpf, dob, password })
+                    body: JSON.stringify({ name, cpf, dob, password, whatsapp })
                 });
                 
                 const data = await response.json();
@@ -1601,6 +2178,8 @@
             updateUserInfo();
             loadPatientHistory();
             loadPatientExams();
+            loadPatientAppointments();
+            loadDoctors();
         }
 
         function updateUserInfo() {
@@ -1613,6 +2192,7 @@
             document.getElementById('profile-name').textContent = currentUser.name;
             document.getElementById('profile-cpf').textContent = `CPF: ${cpfFormatted}`;
             document.getElementById('profile-dob').textContent = `Data de Nascimento: ${formatDate(currentUser.dob)}`;
+            document.getElementById('profile-whatsapp').textContent = `WhatsApp: ${currentUser.whatsapp || 'Não informado'}`;
             
             if (currentUser.avatar_url) {
                 document.getElementById('sidebar-avatar').innerHTML = `<img src="${currentUser.avatar_url}" alt="Avatar">`;
@@ -1628,6 +2208,8 @@
             
             document.getElementById('section-history').classList.add('hidden');
             document.getElementById('section-exams').classList.add('hidden');
+            document.getElementById('section-appointments').classList.add('hidden');
+            document.getElementById('section-schedule').classList.add('hidden');
             document.getElementById('section-profile').classList.add('hidden');
             
             document.getElementById(`section-${section}`).classList.remove('hidden');
@@ -1725,66 +2307,11 @@
             }
         }
 
-        function downloadExam(url, name) {
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${name}.pdf`;
-            a.target = '_blank';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
-        async function uploadAvatar(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            
-            reader.onload = async () => {
-                const base64 = reader.result;
-                const token = localStorage.getItem('token');
-                
-                try {
-                    const response = await fetch(`${API_URL}/api/patient/avatar`, {
-                        method: 'POST',
-                        headers: { 
-                            'Authorization': `Bearer ${token}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ avatar: base64 })
-                    });
-                    
-                    const data = await response.json();
-                    
-                    if (!response.ok) throw new Error(data.error);
-                    
-                    currentUser.avatar_url = data.avatar_url;
-                    localStorage.setItem('user', JSON.stringify(currentUser));
-                    updateUserInfo();
-                } catch (error) {
-                    alert('Erro ao enviar foto: ' + error.message);
-                }
-            };
-        }
-
-        // ============================================
-        // DASHBOARD ADMIN
-        // ============================================
-        function showAdminDashboard() {
-            document.getElementById('auth-section').classList.add('hidden');
-            document.getElementById('patient-dashboard').classList.add('hidden');
-            document.getElementById('admin-dashboard').classList.remove('hidden');
-            
-            loadClients();
-        }
-
-        async function loadClients() {
-            const token = localStorage.getItem('adminToken');
+        async function loadPatientAppointments() {
+            const token = localStorage.getItem('token');
             
             try {
-                const response = await fetch(`${API_URL}/api/admin/clients`, {
+                const response = await fetch(`${API_URL}/api/patient/appointments`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 
@@ -1792,26 +2319,462 @@
                 
                 if (!response.ok) throw new Error(data.error);
                 
-                allClients = data;
-                renderClients(data);
+                const container = document.getElementById('appointments-list');
+                
+                if (data.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-calendar-times"></i>
+                            <h3>Nenhum agendamento encontrado</h3>
+                            <p>Você ainda não tem consultas agendadas</p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = data.map(appointment => `
+                        <div class="appointment-card ${appointment.status}">
+                            <div class="appointment-header">
+                                <div>
+                                    <div class="appointment-time">${formatTime(appointment.appointment_time)}</div>
+                                    <div class="appointment-date">${formatDate(appointment.appointment_date)}</div>
+                                </div>
+                                <div class="badge ${appointment.status === 'agendado' ? 'badge-success' : appointment.status === 'cancelado' ? 'badge-danger' : 'badge-info'}">
+                                    ${appointment.status === 'agendado' ? 'Agendado' : appointment.status === 'cancelado' ? 'Cancelado' : 'Realizado'}
+                                </div>
+                            </div>
+                            <div class="appointment-doctor">
+                                <i class="fas fa-user-md"></i>
+                                <div>
+                                    <strong>${appointment.doctors.name}</strong>
+                                    <p>${appointment.doctors.specialty}</p>
+                                </div>
+                            </div>
+                            ${appointment.notes ? `<p><strong>Observações:</strong> ${appointment.notes}</p>` : ''}
+                            ${appointment.status === 'agendado' ? `
+                                <div class="appointment-actions">
+                                    <button class="btn btn-danger btn-sm" onclick="cancelAppointment('${appointment.id}')">
+                                        <i class="fas fa-times"></i> Cancelar
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `).join('');
+                }
+                
+                document.getElementById('stat-appointments').textContent = data.length;
             } catch (error) {
-                console.error('Erro ao carregar clientes:', error);
+                console.error('Erro ao carregar agendamentos:', error);
             }
         }
 
-        function renderClients(clients) {
-            const grid = document.getElementById('clients-grid');
+        async function loadDoctors() {
+            const token = localStorage.getItem('token');
             
-            if (clients.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state" style="grid-column: 1 / -1;">
-                        <i class="fas fa-users"></i>
-                        <h3>Nenhum cliente encontrado</h3>
-                        <p>Não há clientes cadastrados</p>
+            try {
+                const response = await fetch(`${API_URL}/api/doctors`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                allDoctors = data;
+                
+                // Extrair especialidades únicas
+                const specialties = [...new Set(data.map(doctor => doctor.specialty))];
+                allSpecialties = specialties;
+                
+                // Atualizar filtro de especialidades
+                const filter = document.getElementById('specialty-filter');
+                filter.innerHTML = '<option value="">Todas as especialidades</option>' +
+                    specialties.map(spec => `<option value="${spec}">${spec}</option>`).join('');
+                
+                renderDoctors(data);
+            } catch (error) {
+                console.error('Erro ao carregar médicos:', error);
+            }
+        }
+
+        function renderDoctors(doctors) {
+            const container = document.getElementById('doctors-list');
+            
+            if (doctors.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-user-md"></i>
+                        <h3>Nenhum médico encontrado</h3>
+                        <p>Não há médicos disponíveis no momento</p>
                     </div>
                 `;
                 return;
             }
+            
+            container.innerHTML = doctors.filter(doctor => doctor.active).map(doctor => `
+                <div class="doctor-card" onclick="selectDoctor('${doctor.id}')">
+                    <div class="doctor-avatar">
+                        ${doctor.avatar_url ? 
+                            `<img src="${doctor.avatar_url}" alt="${doctor.name}">` : 
+                            `<i class="fas fa-user-md"></i>`
+                        }
+                    </div>
+                    <div class="doctor-info">
+                        <h4>${doctor.name}</h4>
+                        <p><strong>Especialidade:</strong> ${doctor.specialty}</p>
+                        <p>${doctor.description || ''}</p>
+                    </div>
+                    <div class="doctor-status ${doctor.active ? 'active' : 'inactive'}">
+                        ${doctor.active ? 'Ativo' : 'Inativo'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterDoctors() {
+            const specialty = document.getElementById('specialty-filter').value;
+            
+            if (!specialty) {
+                renderDoctors(allDoctors.filter(doctor => doctor.active));
+            } else {
+                const filtered = allDoctors.filter(doctor => 
+                    doctor.active && doctor.specialty === specialty
+                );
+                renderDoctors(filtered);
+            }
+        }
+
+        async function selectDoctor(doctorId) {
+            selectedDoctor = allDoctors.find(d => d.id === doctorId);
+            selectedDate = null;
+            
+            // Carregar dias de trabalho do médico
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/doctor-work-days?doctor_id=${doctorId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                doctorWorkDays = data;
+                
+                // Carregar agendamentos existentes para verificar horários ocupados
+                bookedSlots = [];
+                
+                // Mostrar calendário
+                showScheduleCalendar();
+            } catch (error) {
+                alert('Erro ao carregar disponibilidade: ' + error.message);
+            }
+        }
+
+        function showScheduleCalendar() {
+            document.getElementById('schedule-details').classList.remove('hidden');
+            
+            const container = document.getElementById('calendar-container');
+            
+            // Criar calendário para os próximos 30 dias
+            const today = new Date();
+            const calendarDays = [];
+            
+            for (let i = 0; i < 30; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                calendarDays.push(date);
+            }
+            
+            // Filtrar dias em que o médico trabalha
+            const availableDates = calendarDays.filter(date => {
+                const dateStr = date.toISOString().split('T')[0];
+                return doctorWorkDays.some(workDay => workDay.work_date === dateStr);
+            });
+            
+            if (availableDates.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-times"></i>
+                        <h3>Nenhuma data disponível</h3>
+                        <p>Este médico não tem dias de trabalho disponíveis nos próximos 30 dias</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Gerar calendário
+            let calendarHTML = '<div class="calendar">';
+            
+            // Cabeçalho dos dias da semana
+            const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+            weekdays.forEach(day => {
+                calendarHTML += `<div class="calendar-day-header">${day}</div>`;
+            });
+            
+            // Dias do mês
+            // Na função showScheduleCalendar, dentro do forEach dos calendarDays, altere para:
+calendarDays.forEach(date => {
+    const dateStr = date.toISOString().split('T')[0];
+    const isAvailable = doctorWorkDays.some(workDay => workDay.work_date === dateStr);
+    const isPast = date < today;
+    const isSelected = selectedDate === dateStr;
+    
+    let dayClass = 'calendar-day';
+    if (isPast) dayClass += ' past';
+    if (isAvailable) dayClass += ' available';
+    if (isSelected) dayClass += ' selected';
+    
+    calendarHTML += `
+        <div class="${dayClass}" 
+             data-date="${dateStr}"
+             onclick="${!isPast && isAvailable ? `selectDate('${dateStr}')` : ''}">
+            ${date.getDate()}
+            <small style="display: block; font-size: 0.7em; margin-top: 0.25rem;">${isAvailable ? 'Disponível' : ''}</small>
+        </div>
+    `;
+});
+            
+            calendarHTML += '</div>';
+            container.innerHTML = calendarHTML;
+        }
+
+       function selectDate(dateStr) {
+    selectedDate = dateStr;
+    
+    // Atualizar seleção no calendário CORRETAMENTE
+    document.querySelectorAll('.calendar-day').forEach(day => {
+        day.classList.remove('selected');
+        // Obter a data do atributo data-date
+        const dayDate = day.getAttribute('data-date');
+        if (dayDate === dateStr) {
+            day.classList.add('selected');
+        }
+    });
+    
+    // Mostrar informações do dia selecionado
+    const workDay = doctorWorkDays.find(work => work.work_date === dateStr);
+    const container = document.getElementById('time-slots-container');
+    
+    if (workDay) {
+        container.innerHTML = `
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <strong>Data selecionada: ${formatDate(dateStr)}</strong>
+                    <p>Horário de atendimento: ${workDay.start_time.substring(0,5)} às ${workDay.end_time.substring(0,5)}</p>
+                    <p>O médico estará disponível durante todo este período.</p>
+                </div>
+            </div>
+        `;
+    }
+}
+
+        async function confirmAppointment() {
+            if (!selectedDoctor || !selectedDate) {
+                alert('Por favor, selecione médico e data');
+                return;
+            }
+            
+            const whatsapp = document.getElementById('appointment-whatsapp').value;
+            if (!whatsapp) {
+                alert('Por favor, informe seu WhatsApp para contato');
+                return;
+            }
+            
+            const token = localStorage.getItem('token');
+            const notes = document.getElementById('appointment-notes').value;
+            
+            try {
+                const response = await fetch(`${API_URL}/api/appointments`, {
+                    method: 'POST',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        doctor_id: selectedDoctor.id,
+                        appointment_date: selectedDate,
+                        appointment_time: '08:00', // Horário fixo
+                        notes: notes,
+                        whatsapp: whatsapp
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                alert('Consulta agendada com sucesso!');
+                
+                // Resetar seleção
+                selectedDoctor = null;
+                selectedDate = null;
+                
+                // Atualizar a lista de agendamentos
+                loadPatientAppointments();
+                
+                // Voltar para a lista de médicos
+                document.getElementById('schedule-details').classList.add('hidden');
+                document.getElementById('appointment-notes').value = '';
+                document.getElementById('appointment-whatsapp').value = '';
+            } catch (error) {
+                alert('Erro ao agendar consulta: ' + error.message);
+            }
+        }
+
+        function cancelSchedule() {
+            selectedDoctor = null;
+            selectedDate = null;
+            document.getElementById('schedule-details').classList.add('hidden');
+            document.getElementById('appointment-notes').value = '';
+            document.getElementById('appointment-whatsapp').value = '';
+        }
+
+    // Função para cancelar agendamento - CORRIGIDA
+async function cancelAppointment(appointmentId) {
+    if (!confirm('Tem certeza que deseja cancelar este agendamento?')) return;
+    
+    const token = localStorage.getItem('token');
+    
+    try {
+        console.log('Cancelando agendamento ID:', appointmentId);
+        
+        const response = await fetch(`${API_URL}/api/appointments/${appointmentId}/cancel`, {
+            method: 'POST',
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const responseText = await response.text();
+        console.log('Resposta do cancelamento:', responseText);
+        
+        if (!response.ok) {
+            let errorData;
+            try {
+                errorData = JSON.parse(responseText);
+            } catch {
+                errorData = { error: responseText };
+            }
+            throw new Error(errorData.error || 'Erro ao cancelar agendamento');
+        }
+        
+        alert('Agendamento cancelado com sucesso!');
+        loadPatientAppointments();
+    } catch (error) {
+        console.error('Erro detalhado:', error);
+        alert('Erro ao cancelar agendamento: ' + error.message);
+    }
+}
+// Função para atualizar status do agendamento no admin - CORRIGIDA
+// Função para cancelar agendamento - CORRIGIDA
+async function cancelAppointment(appointmentId) {
+    if (!confirm('Tem certeza que deseja cancelar este agendamento?')) return;
+    
+    const token = localStorage.getItem('token');
+    
+    try {
+        console.log('Cancelando agendamento ID:', appointmentId);
+        
+        const response = await fetch(`${API_URL}/api/appointments/${appointmentId}/cancel`, {
+            method: 'POST',
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const responseText = await response.text();
+        console.log('Resposta do cancelamento:', responseText);
+        
+        if (!response.ok) {
+            let errorData;
+            try {
+                errorData = JSON.parse(responseText);
+            } catch {
+                errorData = { error: responseText };
+            }
+            throw new Error(errorData.error || 'Erro ao cancelar agendamento');
+        }
+        
+        alert('Agendamento cancelado com sucesso!');
+        loadPatientAppointments();
+    } catch (error) {
+        console.error('Erro detalhado:', error);
+        alert('Erro ao cancelar agendamento: ' + error.message);
+    }
+}
+
+// Função para atualizar status do agendamento no admin - CORRIGIDA
+async function updateAppointmentStatus(appointmentId, status) {
+    const token = localStorage.getItem('adminToken');
+    
+    try {
+        console.log('Atualizando status do agendamento:', appointmentId, status);
+        
+        const response = await fetch(`${API_URL}/api/admin/appointments/${appointmentId}/status`, {
+            method: 'PUT',
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status })
+        });
+        
+        const responseText = await response.text();
+        console.log('Resposta da atualização:', responseText);
+        
+        if (!response.ok) {
+            let errorData;
+            try {
+                errorData = JSON.parse(responseText);
+            } catch {
+                errorData = { error: responseText };
+            }
+            throw new Error(errorData.error || 'Erro ao atualizar agendamento');
+        }
+        
+        alert('Status atualizado com sucesso!');
+        loadAdminAppointments();
+    } catch (error) {
+        console.error('Erro detalhado:', error);
+        alert('Erro ao atualizar agendamento: ' + error.message);
+    }
+}
+
+// Função para carregar clientes no admin - CORRIGIDA
+async function loadClients() {
+    const token = localStorage.getItem('adminToken');
+    
+    try {
+        const response = await fetch(`${API_URL}/api/admin/clients`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+        
+        const data = await response.json();
+        
+        if (!response.ok) throw new Error(data.error || 'Erro ao carregar clientes');
+        
+        allClients = data;
+        renderClients(data);
+    } catch (error) {
+        console.error('Erro ao carregar clientes:', error);
+        const grid = document.getElementById('clients-grid');
+        grid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1 / -1;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Erro ao carregar clientes</h3>
+                <p>${error.message}</p>
+            </div>
+        `;
+    }
+}
             
             grid.innerHTML = clients.map(client => {
                 const cpfFormatted = client.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
@@ -1825,18 +2788,20 @@
                         <div class="client-info">
                             <h4>${client.name}</h4>
                             <p>${cpfFormatted}</p>
+                            <p><small>${client.whatsapp || ''}</small></p>
                         </div>
                         <i class="fas fa-chevron-right" style="color: var(--text-muted);"></i>
                     </div>
                 `;
             }).join('');
-        }
+        
 
         function filterClients() {
             const search = document.getElementById('admin-search').value.toLowerCase();
             const filtered = allClients.filter(client => 
                 client.name.toLowerCase().includes(search) || 
-                client.cpf.includes(search.replace(/\D/g, ''))
+                client.cpf.includes(search.replace(/\D/g, '')) ||
+                (client.whatsapp && client.whatsapp.includes(search))
             );
             renderClients(filtered);
         }
@@ -1860,6 +2825,7 @@
                 document.getElementById('modal-client-fullname').textContent = client.name;
                 document.getElementById('modal-client-cpf').textContent = `CPF: ${cpfFormatted}`;
                 document.getElementById('modal-client-dob').textContent = `Nascimento: ${formatDate(client.dob)}`;
+                document.getElementById('modal-client-whatsapp').textContent = `WhatsApp: ${client.whatsapp || 'Não informado'}`;
                 
                 const avatarEl = document.getElementById('modal-client-avatar');
                 avatarEl.innerHTML = client.avatar_url 
@@ -2173,6 +3139,522 @@
         }
 
         // ============================================
+        // GERENCIAMENTO DE MÉDICOS (ADMIN)
+        // ============================================
+        async function loadAdminDoctors() {
+            const token = localStorage.getItem('adminToken');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/doctors`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                renderAdminDoctors(data);
+                
+                // Atualizar select de médicos para dias de trabalho
+                const select = document.getElementById('work-day-doctor');
+                select.innerHTML = '<option value="">Selecione um médico</option>' +
+                    data.map(doctor => `<option value="${doctor.id}">${doctor.name} - ${doctor.specialty}</option>`).join('');
+            } catch (error) {
+                console.error('Erro ao carregar médicos:', error);
+            }
+        }
+
+        function renderAdminDoctors(doctors) {
+            const container = document.getElementById('doctors-admin-list');
+            
+            if (doctors.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-user-md"></i>
+                        <h3>Nenhum médico cadastrado</h3>
+                        <p>Adicione o primeiro médico</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = doctors.map(doctor => `
+                <div class="doctor-card">
+                    <div class="doctor-avatar">
+                        ${doctor.avatar_url ? 
+                            `<img src="${doctor.avatar_url}" alt="${doctor.name}">` : 
+                            `<i class="fas fa-user-md"></i>`
+                        }
+                    </div>
+                    <div class="doctor-info">
+                        <h4>${doctor.name}</h4>
+                        <p><strong>Especialidade:</strong> ${doctor.specialty}</p>
+                        <p>${doctor.description || ''}</p>
+                        <p><small>${doctor.phone || ''} ${doctor.email ? '| ' + doctor.email : ''}</small></p>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <button class="btn btn-primary btn-sm" onclick="editDoctor('${doctor.id}')">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <div class="doctor-status ${doctor.active ? 'active' : 'inactive'}">
+                            ${doctor.active ? 'Ativo' : 'Inativo'}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showAddDoctorForm() {
+            document.getElementById('add-doctor-form').classList.remove('hidden');
+        }
+
+        function hideAddDoctorForm() {
+            document.getElementById('add-doctor-form').classList.add('hidden');
+            document.getElementById('doctor-name').value = '';
+            document.getElementById('doctor-specialty').value = '';
+            document.getElementById('doctor-description').value = '';
+            document.getElementById('doctor-phone').value = '';
+            document.getElementById('doctor-email').value = '';
+            document.getElementById('doctor-avatar').value = '';
+            document.getElementById('doctor-avatar-preview').classList.add('hidden');
+        }
+
+        function previewDoctorAvatar(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('doctor-avatar-img').src = e.target.result;
+                document.getElementById('doctor-avatar-preview').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function saveDoctor() {
+            const token = localStorage.getItem('adminToken');
+            
+            const name = document.getElementById('doctor-name').value;
+            const specialty = document.getElementById('doctor-specialty').value;
+            const description = document.getElementById('doctor-description').value;
+            const phone = document.getElementById('doctor-phone').value;
+            const email = document.getElementById('doctor-email').value;
+            const avatarInput = document.getElementById('doctor-avatar');
+            
+            if (!name || !specialty) {
+                alert('Nome e especialidade são obrigatórios');
+                return;
+            }
+            
+            let avatarBase64 = null;
+            if (avatarInput.files[0]) {
+                const file = avatarInput.files[0];
+                avatarBase64 = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.readAsDataURL(file);
+                });
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/doctors`, {
+                    method: 'POST',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        specialty,
+                        description,
+                        phone,
+                        email,
+                        avatar: avatarBase64
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                hideAddDoctorForm();
+                loadAdminDoctors();
+            } catch (error) {
+                alert('Erro ao salvar médico: ' + error.message);
+            }
+        }
+
+        async function editDoctor(doctorId) {
+            const token = localStorage.getItem('adminToken');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/doctors`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const doctors = await response.json();
+                
+                if (!response.ok) throw new Error(doctors.error);
+                
+                const doctor = doctors.find(d => d.id === doctorId);
+                
+                if (!doctor) {
+                    alert('Médico não encontrado');
+                    return;
+                }
+                
+                document.getElementById('modal-doctor-name').textContent = doctor.name;
+                document.getElementById('edit-doctor-name').value = doctor.name;
+                document.getElementById('edit-doctor-specialty').value = doctor.specialty;
+                document.getElementById('edit-doctor-description').value = doctor.description || '';
+                document.getElementById('edit-doctor-phone').value = doctor.phone || '';
+                document.getElementById('edit-doctor-email').value = doctor.email || '';
+                document.getElementById('edit-doctor-active').value = doctor.active;
+                
+                // Limpar preview anterior
+                document.getElementById('edit-doctor-avatar-preview').classList.add('hidden');
+                
+                if (doctor.avatar_url) {
+                    document.getElementById('edit-doctor-avatar-img').src = doctor.avatar_url;
+                    document.getElementById('edit-doctor-avatar-preview').classList.remove('hidden');
+                }
+                
+                document.getElementById('doctor-modal').classList.remove('hidden');
+                document.getElementById('doctor-modal').dataset.doctorId = doctorId;
+            } catch (error) {
+                alert('Erro ao carregar médico: ' + error.message);
+            }
+        }
+
+        function previewEditDoctorAvatar(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('edit-doctor-avatar-img').src = e.target.result;
+                document.getElementById('edit-doctor-avatar-preview').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function closeDoctorModal() {
+            document.getElementById('doctor-modal').classList.add('hidden');
+        }
+
+        async function updateDoctor() {
+            const doctorId = document.getElementById('doctor-modal').dataset.doctorId;
+            const token = localStorage.getItem('adminToken');
+            
+            const name = document.getElementById('edit-doctor-name').value;
+            const specialty = document.getElementById('edit-doctor-specialty').value;
+            const description = document.getElementById('edit-doctor-description').value;
+            const phone = document.getElementById('edit-doctor-phone').value;
+            const email = document.getElementById('edit-doctor-email').value;
+            const active = document.getElementById('edit-doctor-active').value === 'true';
+            const avatarInput = document.getElementById('edit-doctor-avatar');
+            
+            if (!name || !specialty) {
+                alert('Nome e especialidade são obrigatórios');
+                return;
+            }
+            
+            let avatarBase64 = null;
+            if (avatarInput.files[0]) {
+                const file = avatarInput.files[0];
+                avatarBase64 = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.readAsDataURL(file);
+                });
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/doctors/${doctorId}`, {
+                    method: 'PUT',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        specialty,
+                        description,
+                        phone,
+                        email,
+                        active,
+                        avatar: avatarBase64
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                closeDoctorModal();
+                loadAdminDoctors();
+            } catch (error) {
+                alert('Erro ao atualizar médico: ' + error.message);
+            }
+        }
+
+        async function deleteDoctor() {
+            const doctorId = document.getElementById('doctor-modal').dataset.doctorId;
+            
+            if (!confirm('Tem certeza que deseja excluir este médico? Esta ação não pode ser desfeita.')) return;
+            
+            const token = localStorage.getItem('adminToken');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/doctors/${doctorId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.error);
+                }
+                
+                closeDoctorModal();
+                loadAdminDoctors();
+            } catch (error) {
+                alert('Erro ao excluir médico: ' + error.message);
+            }
+        }
+
+        // ============================================
+        // GERENCIAMENTO DE AGENDAMENTOS (ADMIN)
+        // ============================================
+        async function loadAdminAppointments() {
+            const token = localStorage.getItem('adminToken');
+            const status = document.getElementById('appointment-filter').value;
+            const date = document.getElementById('appointment-date-filter').value;
+            
+            let url = `${API_URL}/api/admin/appointments`;
+            if (status || date) {
+                const params = new URLSearchParams();
+                if (status) params.append('status', status);
+                if (date) params.append('date', date);
+                url += '?' + params.toString();
+            }
+            
+            try {
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                renderAdminAppointments(data);
+            } catch (error) {
+                console.error('Erro ao carregar agendamentos:', error);
+            }
+        }
+
+        function renderAdminAppointments(appointments) {
+            const container = document.getElementById('admin-appointments-list');
+            
+            if (appointments.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-times"></i>
+                        <h3>Nenhum agendamento encontrado</h3>
+                        <p>Não há agendamentos com os filtros selecionados</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = appointments.map(appointment => `
+                <div class="appointment-card ${appointment.status}">
+                    <div class="appointment-header">
+                        <div>
+                            <div class="appointment-time">${formatTime(appointment.appointment_time)}</div>
+                            <div class="appointment-date">${formatDate(appointment.appointment_date)}</div>
+                        </div>
+                        <div class="badge ${appointment.status === 'agendado' ? 'badge-success' : appointment.status === 'cancelado' ? 'badge-danger' : 'badge-info'}">
+                            ${appointment.status === 'agendado' ? 'Agendado' : appointment.status === 'cancelado' ? 'Cancelado' : 'Realizado'}
+                        </div>
+                    </div>
+                    <div class="appointment-doctor">
+                        <i class="fas fa-user-md"></i>
+                        <div>
+                            <strong>${appointment.doctors.name}</strong>
+                            <p>${appointment.doctors.specialty}</p>
+                        </div>
+                    </div>
+                    <div class="appointment-doctor">
+                        <i class="fas fa-user"></i>
+                        <div>
+                            <strong>${appointment.patients.name}</strong>
+                            <p>${appointment.patients.cpf}</p>
+                            <p><small>${appointment.patients.whatsapp || ''}</small></p>
+                        </div>
+                    </div>
+                    ${appointment.notes ? `<p><strong>Observações:</strong> ${appointment.notes}</p>` : ''}
+                    <div class="appointment-actions">
+                        ${appointment.status === 'agendado' ? `
+                            <button class="btn btn-success btn-sm" onclick="updateAppointmentStatus('${appointment.id}', 'realizado')">
+                                <i class="fas fa-check"></i> Marcar como Realizado
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="updateAppointmentStatus('${appointment.id}', 'cancelado')">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                        ` : ''}
+                        ${appointment.status === 'realizado' ? `
+                            <button class="btn btn-primary btn-sm" onclick="updateAppointmentStatus('${appointment.id}', 'agendado')">
+                                <i class="fas fa-undo"></i> Reabrir
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function updateAppointmentStatus(appointmentId, status) {
+            const token = localStorage.getItem('adminToken');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/appointments/${appointmentId}/status`, {
+                    method: 'PUT',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                loadAdminAppointments();
+            } catch (error) {
+                alert('Erro ao atualizar agendamento: ' + error.message);
+            }
+        }
+
+        // ============================================
+        // GERENCIAMENTO DE DIAS DE TRABALHO
+        // ============================================
+        async function loadWorkDays() {
+            const token = localStorage.getItem('adminToken');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/work-days`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                const container = document.getElementById('work-days-list');
+                
+                if (data.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-calendar-times"></i>
+                            <h3>Nenhum dia de trabalho cadastrado</h3>
+                            <p>Adicione dias de trabalho para os médicos</p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = data.map(workDay => `
+                        <div class="work-day-card">
+                            <div class="work-day-date">
+                                <strong>${workDay.doctors?.name || 'Médico'}</strong> - ${formatDate(workDay.work_date)}
+                            </div>
+                            <div class="work-day-time">
+                                ${workDay.start_time.substring(0,5)} às ${workDay.end_time.substring(0,5)}
+                            </div>
+                            <button class="btn btn-danger btn-sm mt-2" onclick="deleteWorkDay('${workDay.id}')">
+                                <i class="fas fa-trash"></i> Excluir
+                            </button>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Erro ao carregar dias de trabalho:', error);
+                document.getElementById('work-days-list').innerHTML = `
+                    <div class="alert alert-error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>Erro ao carregar dias de trabalho: ${error.message}</div>
+                    </div>
+                `;
+            }
+        }
+
+        async function addWorkDay() {
+            const token = localStorage.getItem('adminToken');
+            
+            const doctorId = document.getElementById('work-day-doctor').value;
+            const date = document.getElementById('work-day-date').value;
+            const startTime = document.getElementById('work-day-start').value;
+            const endTime = document.getElementById('work-day-end').value;
+            
+            if (!doctorId || !date || !startTime || !endTime) {
+                alert('Todos os campos são obrigatórios');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/doctor-work-days`, {
+                    method: 'POST',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        doctor_id: doctorId,
+                        work_date: date,
+                        start_time: startTime,
+                        end_time: endTime
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                // Limpar formulário
+                document.getElementById('work-day-date').value = '';
+                document.getElementById('work-day-start').value = '';
+                document.getElementById('work-day-end').value = '';
+                
+                alert('Dia de trabalho adicionado com sucesso!');
+                loadWorkDays();
+            } catch (error) {
+                alert('Erro ao adicionar dia de trabalho: ' + error.message);
+            }
+        }
+
+        async function deleteWorkDay(workDayId) {
+            if (!confirm('Tem certeza que deseja excluir este dia de trabalho?')) return;
+            
+            const token = localStorage.getItem('adminToken');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/admin/doctor-work-days/${workDayId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.error);
+                }
+                
+                loadWorkDays();
+            } catch (error) {
+                alert('Erro ao excluir dia de trabalho: ' + error.message);
+            }
+        }
+
+        // ============================================
         // MOBILE
         // ============================================
         function toggleSidebar() {
@@ -2182,7 +3664,131 @@
             sidebar.classList.toggle('open');
             overlay.classList.toggle('hidden');
         }
+        // ============================================
+// FUNÇÕES ADMIN DASHBOARD
+// ============================================
 
+function showAdminDashboard() {
+    document.getElementById('auth-section').classList.add('hidden');
+    document.getElementById('patient-dashboard').classList.add('hidden');
+    document.getElementById('admin-dashboard').classList.remove('hidden');
+    
+    // Carregar dados do admin
+    loadClients();
+    loadAdminDoctors();
+    loadAdminAppointments();
+    loadWorkDays();
+}
+
+function showAdminSection(section) {
+    // Remove active de todas as tabs
+    document.querySelectorAll('.admin-nav-item').forEach(item => item.classList.remove('active'));
+    
+    // Adiciona active na tab clicada
+    if (event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+    }
+    
+    // Esconde todas as seções
+    document.getElementById('admin-section-clients').classList.add('hidden');
+    document.getElementById('admin-section-doctors').classList.add('hidden');
+    document.getElementById('admin-section-appointments').classList.add('hidden');
+    document.getElementById('admin-section-work-days').classList.add('hidden');
+    
+    // Mostra a seção selecionada
+    document.getElementById(`admin-section-${section}`).classList.remove('hidden');
+}
+
+// Função para renderizar clientes (já existe mas vamos verificar)
+function renderClients(clients) {
+    const grid = document.getElementById('clients-grid');
+    
+    if (!clients || clients.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1 / -1;">
+                <i class="fas fa-users"></i>
+                <h3>Nenhum cliente cadastrado</h3>
+                <p>Não há pacientes cadastrados no sistema</p>
+            </div>
+        `;
+        return;
+    }
+    
+    grid.innerHTML = clients.map(client => {
+        const cpfFormatted = client.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        return `
+            <div class="client-card" onclick="openClientModal('${client.id}')">
+                <div class="client-avatar">
+                    ${client.avatar_url 
+                        ? `<img src="${client.avatar_url}" alt="${client.name}">` 
+                        : '<i class="fas fa-user"></i>'}
+                </div>
+                <div class="client-info">
+                    <h4>${client.name}</h4>
+                    <p>${cpfFormatted}</p>
+                    <p><small>${client.whatsapp || ''}</small></p>
+                </div>
+                <i class="fas fa-chevron-right" style="color: var(--text-muted);"></i>
+            </div>
+        `;
+    }).join('');
+}
+
+// Função para download de exames
+function downloadExam(url, filename) {
+    // Se a URL já for absoluta, usa diretamente
+    if (url.startsWith('http')) {
+        window.open(url, '_blank');
+    } else {
+        // Se for relativa, constrói a URL completa
+        window.open(`${API_URL}${url}`, '_blank');
+    }
+}
+
+// ============================================
+// FUNÇÕES DE PERFIL
+// ============================================
+
+async function uploadAvatar(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    
+    reader.onload = async () => {
+        const base64 = reader.result;
+        const token = localStorage.getItem('token');
+        
+        try {
+            const response = await fetch(`${API_URL}/api/patient/avatar`, {
+                method: 'POST',
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ avatar: base64 })
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) throw new Error(data.error);
+            
+            // Atualizar a imagem em todos os lugares
+            document.querySelectorAll('.sidebar-avatar, .profile-avatar-large').forEach(el => {
+                el.innerHTML = `<img src="${data.avatar_url}" alt="Avatar">`;
+            });
+            
+            // Atualizar o currentUser
+            if (currentUser) {
+                currentUser.avatar_url = data.avatar_url;
+                localStorage.setItem('user', JSON.stringify(currentUser));
+            }
+        } catch (error) {
+            alert('Erro ao enviar foto: ' + error.message);
+        }
+    };
+}
         // ============================================
         // INICIALIZAÇÃO
         // ============================================
@@ -2213,4 +3819,4 @@
         document.addEventListener('DOMContentLoaded', checkAuth);
     </script>
 </body>
-</html> 
+</html>
