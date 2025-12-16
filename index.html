@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,123 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Week Grid Styles */
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .day-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .day-header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .day-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .day-date {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .day-actions {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .day-appointments {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .week-appointment-item {
+            background: var(--background);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--primary);
+        }
+
+        .week-appointment-item.cancelado {
+            border-left-color: var(--danger);
+            opacity: 0.7;
+        }
+
+        .week-appointment-item.realizado {
+            border-left-color: var(--success);
+        }
+
+        .appointment-time {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .appointment-patient-info {
+            font-size: 0.75rem;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .appointment-patient-info strong {
+            color: var(--primary-dark);
+        }
+
+        .appointment-doctor-info {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .appointment-status-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .appointment-actions-week {
+            display: flex;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .appointment-actions-week button {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+        }
+
+        .mx-4 {
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -39,21 +157,65 @@
         }
 
         /* Utilities */
-        .hidden { display: none !important; }
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .items-center { align-items: center; }
-        .justify-center { justify-content: center; }
-        .justify-between { justify-content: space-between; }
-        .gap-2 { gap: 0.5rem; }
-        .gap-4 { gap: 1rem; }
-        .gap-6 { gap: 1.5rem; }
-        .w-full { width: 100%; }
-        .text-center { text-align: center; }
-        .mt-4 { margin-top: 1rem; }
-        .mb-4 { margin-bottom: 1rem; }
-        .p-4 { padding: 1rem; }
-        .p-6 { padding: 1.5rem; }
+        .hidden {
+            display: none !important;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .gap-6 {
+            gap: 1.5rem;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-4 {
+            margin-top: 1rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .p-4 {
+            padding: 1rem;
+        }
+
+        .p-6 {
+            padding: 1.5rem;
+        }
 
         /* Auth Container */
         .auth-container {
@@ -190,6 +352,11 @@
         .btn-sm {
             padding: 0.5rem 1rem;
             font-size: 0.875rem;
+        }
+
+        .btn-xs {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
         }
 
         /* Auth Toggle */
@@ -433,7 +600,8 @@
             border-collapse: collapse;
         }
 
-        th, td {
+        th,
+        td {
             padding: 1rem;
             text-align: left;
             border-bottom: 1px solid var(--border);
@@ -904,7 +1072,9 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Empty state */
@@ -1201,8 +1371,134 @@
             background: var(--primary);
             color: white;
         }
+
+        /* Improved Admin Appointment Section */
+        .admin-appointments-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .appointments-filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 200px;
+        }
+
+        .appointments-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .summary-card h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .summary-card p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .appointments-table {
+            background: var(--surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .status-filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .status-filter-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background: var(--background);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .status-filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .status-filter-btn:hover:not(.active) {
+            background: var(--border);
+        }
+
+        .appointment-actions-dropdown {
+            position: relative;
+        }
+
+        .dropdown-btn {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            right: 0;
+            background: var(--surface);
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            min-width: 160px;
+            z-index: 100;
+            display: none;
+        }
+
+        .appointment-actions-dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: var(--background);
+        }
     </style>
 </head>
+
 <body>
     <!-- Auth Section -->
     <div id="auth-section" class="auth-container">
@@ -1216,11 +1512,13 @@
             <form onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label class="form-label">CPF</label>
-                    <input type="text" id="login-cpf" class="form-input" placeholder="000.000.000-00" required maxlength="14" oninput="formatCPF(this)">
+                    <input type="text" id="login-cpf" class="form-input" placeholder="000.000.000-00" required
+                        maxlength="14" oninput="formatCPF(this)">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Senha</label>
-                    <input type="password" id="login-password" class="form-input" placeholder="Digite sua senha" required>
+                    <input type="password" id="login-password" class="form-input" placeholder="Digite sua senha"
+                        required>
                 </div>
                 <div id="login-error" class="alert alert-error hidden"></div>
                 <button type="submit" class="btn btn-primary btn-block" id="login-btn">
@@ -1252,7 +1550,8 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">CPF *</label>
-                    <input type="text" id="register-cpf" class="form-input" placeholder="000.000.000-00" required maxlength="14" oninput="formatCPF(this)">
+                    <input type="text" id="register-cpf" class="form-input" placeholder="000.000.000-00" required
+                        maxlength="14" oninput="formatCPF(this)">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Data de Nascimento *</label>
@@ -1264,11 +1563,13 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Senha *</label>
-                    <input type="password" id="register-password" class="form-input" placeholder="Crie uma senha" required minlength="6">
+                    <input type="password" id="register-password" class="form-input" placeholder="Crie uma senha"
+                        required minlength="6">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Confirmar Senha *</label>
-                    <input type="password" id="register-confirm" class="form-input" placeholder="Confirme sua senha" required>
+                    <input type="password" id="register-confirm" class="form-input" placeholder="Confirme sua senha"
+                        required>
                 </div>
                 <div id="register-error" class="alert alert-error hidden"></div>
                 <div id="register-success" class="alert alert-success hidden"></div>
@@ -1317,13 +1618,13 @@
             <i class="fas fa-bars"></i>
         </div>
         <div id="sidebar-overlay" class="overlay hidden" onclick="toggleSidebar()"></div>
-        
+
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-logo">
                 <i class="fas fa-hospital-user"></i>
                 <span>Prontuário</span>
             </div>
-            
+
             <div class="sidebar-user">
                 <div class="sidebar-avatar" id="sidebar-avatar">
                     <i class="fas fa-user"></i>
@@ -1333,7 +1634,7 @@
                     <p id="sidebar-cpf">000.000.000-00</p>
                 </div>
             </div>
-            
+
             <nav class="sidebar-nav">
                 <div class="nav-item active" onclick="showPatientSection('history')">
                     <i class="fas fa-history"></i>
@@ -1356,7 +1657,7 @@
                     <span>Meu Perfil</span>
                 </div>
             </nav>
-            
+
             <div class="sidebar-footer">
                 <div class="nav-item" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i>
@@ -1364,7 +1665,7 @@
                 </div>
             </div>
         </aside>
-        
+
         <main class="main-content">
             <!-- History Section -->
             <section id="section-history">
@@ -1372,7 +1673,7 @@
                     <h1>Histórico de Consultas</h1>
                     <p>Veja todas as suas consultas anteriores</p>
                 </div>
-                
+
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-icon blue">
@@ -1402,7 +1703,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Consultas Recentes</h3>
@@ -1437,7 +1738,7 @@
                     <h1>Meus Exames</h1>
                     <p>Visualize e baixe seus exames</p>
                 </div>
-                
+
                 <div class="exams-grid" id="exams-grid">
                     <div class="loading">
                         <div class="spinner"></div>
@@ -1451,7 +1752,7 @@
                     <h1>Meus Agendamentos</h1>
                     <p>Gerencie suas consultas agendadas</p>
                 </div>
-                
+
                 <div id="appointments-list">
                     <div class="loading">
                         <div class="spinner"></div>
@@ -1465,7 +1766,7 @@
                     <h1>Agendar Consulta</h1>
                     <p>Escolha um médico e agende sua consulta</p>
                 </div>
-                
+
                 <div class="card">
                     <h3 style="margin-bottom: 1rem;">Passo 1: Escolha um médico</h3>
                     <div class="form-group">
@@ -1474,20 +1775,20 @@
                             <option value="">Todas as especialidades</option>
                         </select>
                     </div>
-                    
+
                     <div id="doctors-list" class="flex flex-col gap-4 mt-4">
                         <div class="loading">
                             <div class="spinner"></div>
                         </div>
                     </div>
                 </div>
-                
+
                 <div id="schedule-details" class="hidden">
                     <div class="card mt-4">
                         <h3>Passo 2: Escolha a data</h3>
                         <div id="calendar-container" class="mt-4"></div>
                     </div>
-                    
+
                     <div class="card mt-4">
                         <h3>Passo 3: Informações da consulta</h3>
                         <div id="time-slots-container" class="mt-4">
@@ -1501,11 +1802,13 @@
                         </div>
                         <div class="form-group mt-4">
                             <label class="form-label">WhatsApp para contato *</label>
-                            <input type="text" id="appointment-whatsapp" class="form-input" placeholder="(11) 99999-9999" required>
+                            <input type="text" id="appointment-whatsapp" class="form-input"
+                                placeholder="(11) 99999-9999" required>
                         </div>
                         <div class="form-group mt-4">
                             <label class="form-label">Observações (opcional)</label>
-                            <textarea id="appointment-notes" class="form-input" rows="3" placeholder="Alguma observação importante para a consulta..."></textarea>
+                            <textarea id="appointment-notes" class="form-input" rows="3"
+                                placeholder="Alguma observação importante para a consulta..."></textarea>
                         </div>
                         <div class="flex gap-4 mt-4">
                             <button class="btn btn-primary" onclick="confirmAppointment()">
@@ -1525,7 +1828,7 @@
                     <h1>Meu Perfil</h1>
                     <p>Gerencie suas informações pessoais</p>
                 </div>
-                
+
                 <div class="card">
                     <div class="profile-header">
                         <div class="profile-avatar-large" id="profile-avatar-container">
@@ -1533,7 +1836,8 @@
                             <img id="profile-avatar-img" class="hidden" src="" alt="Avatar">
                             <label class="profile-avatar-upload">
                                 <i class="fas fa-camera"></i>
-                                <input type="file" accept="image/*" onchange="uploadAvatar(event)" style="display: none;">
+                                <input type="file" accept="image/*" onchange="uploadAvatar(event)"
+                                    style="display: none;">
                             </label>
                         </div>
                         <div class="profile-info">
@@ -1556,7 +1860,7 @@
                 <i class="fas fa-sign-out-alt"></i> Sair
             </button>
         </header>
-        
+
         <main class="main-content" style="margin-left: 0;">
             <div class="admin-nav">
                 <div class="admin-nav-item active" onclick="showAdminSection('clients')">
@@ -1572,19 +1876,20 @@
                     <i class="fas fa-calendar-day"></i> Dias de Trabalho
                 </div>
             </div>
-            
+
             <!-- Clients Section -->
             <section id="admin-section-clients">
                 <div class="page-header">
                     <h1>Gerenciar Clientes</h1>
                     <p>Visualize e gerencie os cadastros dos pacientes</p>
                 </div>
-                
+
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="admin-search" placeholder="Buscar por nome ou CPF..." oninput="filterClients()">
+                    <input type="text" id="admin-search" placeholder="Buscar por nome ou CPF..."
+                        oninput="filterClients()">
                 </div>
-                
+
                 <div class="clients-grid" id="clients-grid">
                     <div class="loading">
                         <div class="spinner"></div>
@@ -1598,20 +1903,22 @@
                     <h1>Gerenciar Médicos</h1>
                     <p>Cadastre e gerencie os médicos da clínica</p>
                 </div>
-                
+
                 <button class="btn btn-primary mb-4" onclick="showAddDoctorForm()">
                     <i class="fas fa-plus"></i> Adicionar Médico
                 </button>
-                
+
                 <div id="add-doctor-form" class="card hidden" style="margin-bottom: 2rem;">
                     <h3>Adicionar Novo Médico</h3>
                     <div class="form-group">
                         <label class="form-label">Nome do Médico *</label>
-                        <input type="text" id="doctor-name" class="form-input" placeholder="Ex: Dr. João Silva" required>
+                        <input type="text" id="doctor-name" class="form-input" placeholder="Ex: Dr. João Silva"
+                            required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Especialidade *</label>
-                        <input type="text" id="doctor-specialty" class="form-input" placeholder="Ex: Cardiologista, Pediatra, etc." required>
+                        <input type="text" id="doctor-specialty" class="form-input"
+                            placeholder="Ex: Cardiologista, Pediatra, etc." required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Foto do Médico (opcional)</label>
@@ -1619,15 +1926,18 @@
                             <button class="btn btn-secondary btn-sm" type="button">
                                 <i class="fas fa-upload"></i> Escolher Foto
                             </button>
-                            <input type="file" id="doctor-avatar" accept="image/*" onchange="previewDoctorAvatar(event)">
+                            <input type="file" id="doctor-avatar" accept="image/*"
+                                onchange="previewDoctorAvatar(event)">
                         </div>
                         <div id="doctor-avatar-preview" class="hidden" style="margin-top: 0.5rem;">
-                            <img id="doctor-avatar-img" src="" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                            <img id="doctor-avatar-img" src=""
+                                style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Descrição (o que o médico faz)</label>
-                        <textarea id="doctor-description" class="form-input" rows="3" placeholder="Descreva as atividades do médico..."></textarea>
+                        <textarea id="doctor-description" class="form-input" rows="3"
+                            placeholder="Descreva as atividades do médico..."></textarea>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Telefone (opcional)</label>
@@ -1642,7 +1952,7 @@
                         <button class="btn btn-secondary" type="button" onclick="hideAddDoctorForm()">Cancelar</button>
                     </div>
                 </div>
-                
+
                 <div id="doctors-admin-list" class="flex flex-col gap-4">
                     <div class="loading">
                         <div class="spinner"></div>
@@ -1654,22 +1964,208 @@
             <section id="admin-section-appointments" class="hidden">
                 <div class="page-header">
                     <h1>Agendamentos</h1>
-                    <p>Gerencie todos os agendamentos da clínica</p>
+                    <p>Gerencie todos os agendamentos da clínica por dia da semana</p>
                 </div>
-                
-                <div class="flex gap-4 mb-4">
-                    <select id="appointment-filter" class="form-input" style="width: auto;" onchange="loadAdminAppointments()">
-                        <option value="">Todos os status</option>
-                        <option value="agendado">Agendados</option>
-                        <option value="cancelado">Cancelados</option>
-                        <option value="realizado">Realizados</option>
-                    </select>
-                    <input type="date" id="appointment-date-filter" class="form-input" style="width: auto;" onchange="loadAdminAppointments()">
-                </div>
-                
-                <div id="admin-appointments-list">
-                    <div class="loading">
-                        <div class="spinner"></div>
+
+                <div class="admin-appointments-container">
+                    <!-- Filtros e controles -->
+                    <div class="card">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <button class="btn btn-secondary" onclick="previousWeek()">
+                                    <i class="fas fa-chevron-left"></i> Semana anterior
+                                </button>
+                                <span id="current-week-range" class="mx-4"
+                                    style="font-weight: 500;">Carregando...</span>
+                                <button class="btn btn-secondary" onclick="nextWeek()">
+                                    Próxima semana <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <div>
+                                <input type="date" id="week-date-selector" class="form-input" style="width: 180px;">
+                            </div>
+                        </div>
+
+                        <div class="appointments-filters">
+                            <div class="filter-group">
+                                <label class="form-label">Médico</label>
+                                <select id="admin-appointment-doctor" class="form-input"
+                                    onchange="loadWeekAppointments()">
+                                    <option value="">Todos os médicos</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="form-label">Status</label>
+                                <select id="admin-appointment-status" class="form-input"
+                                    onchange="loadWeekAppointments()">
+                                    <option value="">Todos os status</option>
+                                    <option value="agendado">Agendados</option>
+                                    <option value="realizado">Realizados</option>
+                                    <option value="cancelado">Cancelados</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="form-label">Buscar paciente</label>
+                                <input type="text" id="admin-appointment-search" class="form-input"
+                                    placeholder="Nome ou CPF..." oninput="loadWeekAppointments()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumo da semana -->
+                    <div class="appointments-summary" id="week-summary">
+                        <div class="summary-card">
+                            <h3 id="summary-total">0</h3>
+                            <p>Total da Semana</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3 id="summary-scheduled">0</h3>
+                            <p>Agendados</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3 id="summary-completed">0</h3>
+                            <p>Realizados</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3 id="summary-cancelled">0</h3>
+                            <p>Cancelados</p>
+                        </div>
+                    </div>
+
+                    <!-- Grid de dias da semana -->
+                    <div class="week-grid">
+                        <!-- Segunda-feira -->
+                        <div class="day-card">
+                            <div class="day-header">
+                                <h3>Segunda-feira</h3>
+                                <div class="day-date" id="monday-date">--/--/----</div>
+                                <div class="day-actions">
+                                    <button class="btn btn-success btn-xs" onclick="sendRemindersForDate('monday')">
+                                        <i class="fas fa-bell"></i> Enviar Lembretes
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="day-appointments" id="monday-appointments">
+                                <div class="empty-state" style="padding: 1rem;">
+                                    <i class="fas fa-calendar-times"></i>
+                                    <p>Nenhum agendamento</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terça-feira -->
+                        <div class="day-card">
+                            <div class="day-header">
+                                <h3>Terça-feira</h3>
+                                <div class="day-date" id="tuesday-date">--/--/----</div>
+                                <div class="day-actions">
+                                    <button class="btn btn-success btn-xs" onclick="sendRemindersForDate('tuesday')">
+                                        <i class="fas fa-bell"></i> Enviar Lembretes
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="day-appointments" id="tuesday-appointments">
+                                <div class="empty-state" style="padding: 1rem;">
+                                    <i class="fas fa-calendar-times"></i>
+                                    <p>Nenhum agendamento</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quarta-feira -->
+                        <div class="day-card">
+                            <div class="day-header">
+                                <h3>Quarta-feira</h3>
+                                <div class="day-date" id="wednesday-date">--/--/----</div>
+                                <div class="day-actions">
+                                    <button class="btn btn-success btn-xs" onclick="sendRemindersForDate('wednesday')">
+                                        <i class="fas fa-bell"></i> Enviar Lembretes
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="day-appointments" id="wednesday-appointments">
+                                <div class="empty-state" style="padding: 1rem;">
+                                    <i class="fas fa-calendar-times"></i>
+                                    <p>Nenhum agendamento</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quinta-feira -->
+                        <div class="day-card">
+                            <div class="day-header">
+                                <h3>Quinta-feira</h3>
+                                <div class="day-date" id="thursday-date">--/--/----</div>
+                                <div class="day-actions">
+                                    <button class="btn btn-success btn-xs" onclick="sendRemindersForDate('thursday')">
+                                        <i class="fas fa-bell"></i> Enviar Lembretes
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="day-appointments" id="thursday-appointments">
+                                <div class="empty-state" style="padding: 1rem;">
+                                    <i class="fas fa-calendar-times"></i>
+                                    <p>Nenhum agendamento</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sexta-feira -->
+                        <div class="day-card">
+                            <div class="day-header">
+                                <h3>Sexta-feira</h3>
+                                <div class="day-date" id="friday-date">--/--/----</div>
+                                <div class="day-actions">
+                                    <button class="btn btn-success btn-xs" onclick="sendRemindersForDate('friday')">
+                                        <i class="fas fa-bell"></i> Enviar Lembretes
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="day-appointments" id="friday-appointments">
+                                <div class="empty-state" style="padding: 1rem;">
+                                    <i class="fas fa-calendar-times"></i>
+                                    <p>Nenhum agendamento</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sábado -->
+                        <div class="day-card">
+                            <div class="day-header">
+                                <h3>Sábado</h3>
+                                <div class="day-date" id="saturday-date">--/--/----</div>
+                                <div class="day-actions">
+                                    <button class="btn btn-success btn-xs" onclick="sendRemindersForDate('saturday')">
+                                        <i class="fas fa-bell"></i> Enviar Lembretes
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="day-appointments" id="saturday-appointments">
+                                <div class="empty-state" style="padding: 1rem;">
+                                    <i class="fas fa-calendar-times"></i>
+                                    <p>Nenhum agendamento</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Domingo -->
+                        <div class="day-card">
+                            <div class="day-header">
+                                <h3>Domingo</h3>
+                                <div class="day-date" id="sunday-date">--/--/----</div>
+                                <div class="day-actions">
+                                    <button class="btn btn-success btn-xs" onclick="sendRemindersForDate('sunday')">
+                                        <i class="fas fa-bell"></i> Enviar Lembretes
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="day-appointments" id="sunday-appointments">
+                                <div class="empty-state" style="padding: 1rem;">
+                                    <i class="fas fa-calendar-times"></i>
+                                    <p>Nenhum agendamento</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1680,7 +2176,7 @@
                     <h1>Dias de Trabalho</h1>
                     <p>Defina os dias e horários de trabalho dos médicos</p>
                 </div>
-                
+
                 <div class="card">
                     <h3>Adicionar Dia de Trabalho</h3>
                     <div class="form-group">
@@ -1705,7 +2201,7 @@
                         <i class="fas fa-plus"></i> Adicionar Dia de Trabalho
                     </button>
                 </div>
-                
+
                 <div class="card mt-4">
                     <h3>Dias de Trabalho Cadastrados</h3>
                     <div id="work-days-list" class="mt-4">
@@ -1733,7 +2229,7 @@
                     <div class="tab" onclick="showClientTab('history')">Histórico</div>
                     <div class="tab" onclick="showClientTab('exams')">Exames</div>
                 </div>
-                
+
                 <!-- Info Tab -->
                 <div id="client-tab-info">
                     <div class="profile-header" style="margin-bottom: 1rem;">
@@ -1760,7 +2256,7 @@
                         <i class="fas fa-trash"></i> Excluir Cliente
                     </button>
                 </div>
-                
+
                 <!-- History Tab -->
                 <div id="client-tab-history" class="hidden">
                     <button class="btn btn-primary btn-sm mb-4" onclick="showAddHistoryForm()">
@@ -1778,11 +2274,13 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Tipo de Consulta</label>
-                            <input type="text" id="history-type" class="form-input" placeholder="Ex: Consulta de rotina">
+                            <input type="text" id="history-type" class="form-input"
+                                placeholder="Ex: Consulta de rotina">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Observações</label>
-                            <textarea id="history-notes" class="form-input" rows="3" placeholder="Observações sobre a consulta"></textarea>
+                            <textarea id="history-notes" class="form-input" rows="3"
+                                placeholder="Observações sobre a consulta"></textarea>
                         </div>
                         <div class="flex gap-2">
                             <button class="btn btn-primary btn-sm" onclick="saveHistory()">Salvar</button>
@@ -1804,7 +2302,7 @@
                         </table>
                     </div>
                 </div>
-                
+
                 <!-- Exams Tab -->
                 <div id="client-tab-exams" class="hidden">
                     <div class="card" style="margin-bottom: 1rem;">
@@ -1871,10 +2369,12 @@
                         <button class="btn btn-secondary btn-sm" type="button">
                             <i class="fas fa-upload"></i> Alterar Foto
                         </button>
-                        <input type="file" id="edit-doctor-avatar" accept="image/*" onchange="previewEditDoctorAvatar(event)">
+                        <input type="file" id="edit-doctor-avatar" accept="image/*"
+                            onchange="previewEditDoctorAvatar(event)">
                     </div>
                     <div id="edit-doctor-avatar-preview" class="hidden" style="margin-top: 0.5rem;">
-                        <img id="edit-doctor-avatar-img" src="" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                        <img id="edit-doctor-avatar-img" src=""
+                            style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
                     </div>
                 </div>
                 <div class="form-group">
@@ -1910,7 +2410,7 @@
         // CONFIGURAÇÃO - ALTERE A URL DO SEU BACKEND
         // ============================================
         const API_URL = 'https://clinica-olive.vercel.app'; // Coloque aqui a URL do seu backend na Vercel
-        
+
         // ============================================
         // ESTADO DA APLICAÇÃO
         // ============================================
@@ -1923,6 +2423,12 @@
         let selectedDate = null;
         let doctorWorkDays = [];
         let bookedSlots = [];
+
+        // ============================================
+        // VARIÁVEIS PARA CONTROLE DA SEMANA
+        // ============================================
+        let currentWeekStart = null;
+        let weekAppointments = {};
 
         // ============================================
         // UTILITÁRIOS
@@ -1940,7 +2446,7 @@
             cpf = cpf.replace(/\D/g, '');
             if (cpf.length !== 11) return false;
             if (/^(\d)\1+$/.test(cpf)) return false;
-            
+
             let sum = 0;
             for (let i = 0; i < 9; i++) {
                 sum += parseInt(cpf.charAt(i)) * (10 - i);
@@ -1948,7 +2454,7 @@
             let remainder = (sum * 10) % 11;
             if (remainder === 10 || remainder === 11) remainder = 0;
             if (remainder !== parseInt(cpf.charAt(9))) return false;
-            
+
             sum = 0;
             for (let i = 0; i < 10; i++) {
                 sum += parseInt(cpf.charAt(i)) * (11 - i);
@@ -1956,13 +2462,13 @@
             remainder = (sum * 10) % 11;
             if (remainder === 10 || remainder === 11) remainder = 0;
             if (remainder !== parseInt(cpf.charAt(10))) return false;
-            
+
             return true;
         }
 
         function formatDate(dateStr) {
             if (!dateStr) return '--/--/----';
-            const date = new Date(dateStr);
+            const date = new Date(dateStr + 'T00:00:00');
             return date.toLocaleDateString('pt-BR');
         }
 
@@ -2017,31 +2523,31 @@
         async function handleLogin(e) {
             e.preventDefault();
             hideError('login-error');
-            
+
             const cpf = document.getElementById('login-cpf').value.replace(/\D/g, '');
             const password = document.getElementById('login-password').value;
-            
+
             const btn = document.getElementById('login-btn');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ cpf, password })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) {
                     throw new Error(data.error || 'Erro ao fazer login');
                 }
-                
+
                 currentUser = data.user;
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
-                
+
                 showPatientDashboard();
             } catch (error) {
                 showError('login-error', error.message);
@@ -2055,54 +2561,54 @@
             e.preventDefault();
             hideError('register-error');
             document.getElementById('register-success').classList.add('hidden');
-            
+
             const name = document.getElementById('register-name').value.trim();
             const cpf = document.getElementById('register-cpf').value.replace(/\D/g, '');
             const dob = document.getElementById('register-dob').value;
             const password = document.getElementById('register-password').value;
             const confirm = document.getElementById('register-confirm').value;
             const whatsapp = document.getElementById('register-whatsapp').value.trim();
-            
+
             if (!validateCPF(cpf)) {
                 showError('register-error', 'CPF inválido');
                 return;
             }
-            
+
             if (password !== confirm) {
                 showError('register-error', 'As senhas não coincidem');
                 return;
             }
-            
+
             if (password.length < 6) {
                 showError('register-error', 'A senha deve ter pelo menos 6 caracteres');
                 return;
             }
-            
+
             if (!whatsapp) {
                 showError('register-error', 'WhatsApp é obrigatório');
                 return;
             }
-            
+
             const btn = document.getElementById('register-btn');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cadastrando...';
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/auth/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, cpf, dob, password, whatsapp })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) {
                     throw new Error(data.error || 'Erro ao cadastrar');
                 }
-                
+
                 showSuccess('register-success', 'Cadastro realizado com sucesso! Faça login.');
                 document.getElementById('register-form').reset();
-                
+
                 setTimeout(() => {
                     showLogin();
                 }, 2000);
@@ -2129,27 +2635,27 @@
         async function handleAdminLogin(e) {
             e.preventDefault();
             hideError('admin-login-error');
-            
+
             const username = document.getElementById('admin-user').value;
             const password = document.getElementById('admin-password').value;
-            
+
             const btn = document.getElementById('admin-login-btn');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) {
                     throw new Error(data.error || 'Credenciais inválidas');
                 }
-                
+
                 localStorage.setItem('adminToken', data.token);
                 showAdminDashboard();
             } catch (error) {
@@ -2174,7 +2680,7 @@
             document.getElementById('auth-section').classList.add('hidden');
             document.getElementById('patient-dashboard').classList.remove('hidden');
             document.getElementById('admin-dashboard').classList.add('hidden');
-            
+
             updateUserInfo();
             loadPatientHistory();
             loadPatientExams();
@@ -2184,16 +2690,16 @@
 
         function updateUserInfo() {
             if (!currentUser) return;
-            
+
             const cpfFormatted = currentUser.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-            
+
             document.getElementById('sidebar-name').textContent = currentUser.name;
             document.getElementById('sidebar-cpf').textContent = cpfFormatted;
             document.getElementById('profile-name').textContent = currentUser.name;
             document.getElementById('profile-cpf').textContent = `CPF: ${cpfFormatted}`;
             document.getElementById('profile-dob').textContent = `Data de Nascimento: ${formatDate(currentUser.dob)}`;
             document.getElementById('profile-whatsapp').textContent = `WhatsApp: ${currentUser.whatsapp || 'Não informado'}`;
-            
+
             if (currentUser.avatar_url) {
                 document.getElementById('sidebar-avatar').innerHTML = `<img src="${currentUser.avatar_url}" alt="Avatar">`;
                 document.getElementById('profile-avatar-icon').classList.add('hidden');
@@ -2205,15 +2711,15 @@
         function showPatientSection(section) {
             document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => item.classList.remove('active'));
             event.currentTarget.classList.add('active');
-            
+
             document.getElementById('section-history').classList.add('hidden');
             document.getElementById('section-exams').classList.add('hidden');
             document.getElementById('section-appointments').classList.add('hidden');
             document.getElementById('section-schedule').classList.add('hidden');
             document.getElementById('section-profile').classList.add('hidden');
-            
+
             document.getElementById(`section-${section}`).classList.remove('hidden');
-            
+
             if (window.innerWidth <= 768) {
                 toggleSidebar();
             }
@@ -2221,18 +2727,18 @@
 
         async function loadPatientHistory() {
             const token = localStorage.getItem('token');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/patient/history`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) throw new Error(data.error);
-                
+
                 const tbody = document.getElementById('history-table-body');
-                
+
                 if (data.length === 0) {
                     tbody.innerHTML = `
                         <tr>
@@ -2255,7 +2761,7 @@
                         </tr>
                     `).join('');
                 }
-                
+
                 document.getElementById('stat-total').textContent = data.length;
             } catch (error) {
                 console.error('Erro ao carregar histórico:', error);
@@ -2264,18 +2770,18 @@
 
         async function loadPatientExams() {
             const token = localStorage.getItem('token');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/patient/exams`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) throw new Error(data.error);
-                
+
                 const grid = document.getElementById('exams-grid');
-                
+
                 if (data.length === 0) {
                     grid.innerHTML = `
                         <div class="empty-state" style="grid-column: 1 / -1;">
@@ -2300,7 +2806,7 @@
                         </div>
                     `).join('');
                 }
-                
+
                 document.getElementById('stat-exams').textContent = data.length;
             } catch (error) {
                 console.error('Erro ao carregar exames:', error);
@@ -2309,18 +2815,18 @@
 
         async function loadPatientAppointments() {
             const token = localStorage.getItem('token');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/patient/appointments`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) throw new Error(data.error);
-                
+
                 const container = document.getElementById('appointments-list');
-                
+
                 if (data.length === 0) {
                     container.innerHTML = `
                         <div class="empty-state">
@@ -2359,7 +2865,7 @@
                         </div>
                     `).join('');
                 }
-                
+
                 document.getElementById('stat-appointments').textContent = data.length;
             } catch (error) {
                 console.error('Erro ao carregar agendamentos:', error);
@@ -2368,27 +2874,27 @@
 
         async function loadDoctors() {
             const token = localStorage.getItem('token');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/doctors`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) throw new Error(data.error);
-                
+
                 allDoctors = data;
-                
+
                 // Extrair especialidades únicas
                 const specialties = [...new Set(data.map(doctor => doctor.specialty))];
                 allSpecialties = specialties;
-                
+
                 // Atualizar filtro de especialidades
                 const filter = document.getElementById('specialty-filter');
                 filter.innerHTML = '<option value="">Todas as especialidades</option>' +
                     specialties.map(spec => `<option value="${spec}">${spec}</option>`).join('');
-                
+
                 renderDoctors(data);
             } catch (error) {
                 console.error('Erro ao carregar médicos:', error);
@@ -2397,7 +2903,7 @@
 
         function renderDoctors(doctors) {
             const container = document.getElementById('doctors-list');
-            
+
             if (doctors.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
@@ -2408,14 +2914,14 @@
                 `;
                 return;
             }
-            
+
             container.innerHTML = doctors.filter(doctor => doctor.active).map(doctor => `
                 <div class="doctor-card" onclick="selectDoctor('${doctor.id}')">
                     <div class="doctor-avatar">
-                        ${doctor.avatar_url ? 
-                            `<img src="${doctor.avatar_url}" alt="${doctor.name}">` : 
-                            `<i class="fas fa-user-md"></i>`
-                        }
+                        ${doctor.avatar_url ?
+                    `<img src="${doctor.avatar_url}" alt="${doctor.name}">` :
+                    `<i class="fas fa-user-md"></i>`
+                }
                     </div>
                     <div class="doctor-info">
                         <h4>${doctor.name}</h4>
@@ -2431,11 +2937,11 @@
 
         function filterDoctors() {
             const specialty = document.getElementById('specialty-filter').value;
-            
+
             if (!specialty) {
                 renderDoctors(allDoctors.filter(doctor => doctor.active));
             } else {
-                const filtered = allDoctors.filter(doctor => 
+                const filtered = allDoctors.filter(doctor =>
                     doctor.active && doctor.specialty === specialty
                 );
                 renderDoctors(filtered);
@@ -2445,24 +2951,24 @@
         async function selectDoctor(doctorId) {
             selectedDoctor = allDoctors.find(d => d.id === doctorId);
             selectedDate = null;
-            
+
             // Carregar dias de trabalho do médico
             const token = localStorage.getItem('token');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/doctor-work-days?doctor_id=${doctorId}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) throw new Error(data.error);
-                
+
                 doctorWorkDays = data;
-                
+
                 // Carregar agendamentos existentes para verificar horários ocupados
                 bookedSlots = [];
-                
+
                 // Mostrar calendário
                 showScheduleCalendar();
             } catch (error) {
@@ -2472,25 +2978,30 @@
 
         function showScheduleCalendar() {
             document.getElementById('schedule-details').classList.remove('hidden');
-            
+
             const container = document.getElementById('calendar-container');
-            
-            // Criar calendário para os próximos 30 dias
+
+            // Criar calendário para os próximos 30 dias com data local
             const today = new Date();
+            today.setHours(0, 0, 0, 0);
             const calendarDays = [];
-            
+
             for (let i = 0; i < 30; i++) {
                 const date = new Date(today);
                 date.setDate(today.getDate() + i);
                 calendarDays.push(date);
             }
-            
+
             // Filtrar dias em que o médico trabalha
             const availableDates = calendarDays.filter(date => {
+                // Formatar data para YYYY-MM-DD
                 const dateStr = date.toISOString().split('T')[0];
-                return doctorWorkDays.some(workDay => workDay.work_date === dateStr);
+                return doctorWorkDays.some(workDay => {
+                    // Comparar as datas diretamente como strings
+                    return workDay.work_date === dateStr;
+                });
             });
-            
+
             if (availableDates.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
@@ -2501,118 +3012,119 @@
                 `;
                 return;
             }
-            
+
             // Gerar calendário
             let calendarHTML = '<div class="calendar">';
-            
+
             // Cabeçalho dos dias da semana
             const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
             weekdays.forEach(day => {
                 calendarHTML += `<div class="calendar-day-header">${day}</div>`;
             });
-            
+
             // Dias do mês
-            // Na função showScheduleCalendar, dentro do forEach dos calendarDays, altere para:
-calendarDays.forEach(date => {
-    const dateStr = date.toISOString().split('T')[0];
-    const isAvailable = doctorWorkDays.some(workDay => workDay.work_date === dateStr);
-    const isPast = date < today;
-    const isSelected = selectedDate === dateStr;
-    
-    let dayClass = 'calendar-day';
-    if (isPast) dayClass += ' past';
-    if (isAvailable) dayClass += ' available';
-    if (isSelected) dayClass += ' selected';
-    
-    calendarHTML += `
-        <div class="${dayClass}" 
-             data-date="${dateStr}"
-             onclick="${!isPast && isAvailable ? `selectDate('${dateStr}')` : ''}">
-            ${date.getDate()}
-            <small style="display: block; font-size: 0.7em; margin-top: 0.25rem;">${isAvailable ? 'Disponível' : ''}</small>
-        </div>
-    `;
-});
-            
+            calendarDays.forEach(date => {
+                const dateStr = date.toISOString().split('T')[0];
+                const isAvailable = doctorWorkDays.some(workDay => {
+                    return workDay.work_date === dateStr;
+                });
+                const isPast = date < today;
+                const isSelected = selectedDate === dateStr;
+
+                let dayClass = 'calendar-day';
+                if (isPast) dayClass += ' past';
+                if (isAvailable) dayClass += ' available';
+                if (isSelected) dayClass += ' selected';
+
+                calendarHTML += `
+                    <div class="${dayClass}" 
+                         data-date="${dateStr}"
+                         onclick="${!isPast && isAvailable ? `selectDate('${dateStr}')` : ''}">
+                        ${date.getDate()}
+                        <small style="display: block; font-size: 0.7em; margin-top: 0.25rem;">${isAvailable ? 'Disponível' : ''}</small>
+                    </div>
+                `;
+            });
+
             calendarHTML += '</div>';
             container.innerHTML = calendarHTML;
         }
 
-       function selectDate(dateStr) {
-    selectedDate = dateStr;
-    
-    // Atualizar seleção no calendário CORRETAMENTE
-    document.querySelectorAll('.calendar-day').forEach(day => {
-        day.classList.remove('selected');
-        // Obter a data do atributo data-date
-        const dayDate = day.getAttribute('data-date');
-        if (dayDate === dateStr) {
-            day.classList.add('selected');
+        function selectDate(dateStr) {
+            selectedDate = dateStr;
+
+            // Atualizar seleção no calendário CORRETAMENTE
+            document.querySelectorAll('.calendar-day').forEach(day => {
+                day.classList.remove('selected');
+                // Obter a data do atributo data-date
+                const dayDate = day.getAttribute('data-date');
+                if (dayDate === dateStr) {
+                    day.classList.add('selected');
+                }
+            });
+
+            // Mostrar informações do dia selecionado
+            const workDay = doctorWorkDays.find(work => work.work_date === dateStr);
+            const container = document.getElementById('time-slots-container');
+
+            if (workDay) {
+                container.innerHTML = `
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Data selecionada: ${formatDate(dateStr)}</strong>
+                            <p>Horário de atendimento: ${workDay.start_time.substring(0, 5)} às ${workDay.end_time.substring(0, 5)}</p>
+                            <p>O médico estará disponível durante todo este período.</p>
+                        </div>
+                    </div>
+                `;
+            }
         }
-    });
-    
-    // Mostrar informações do dia selecionado
-    const workDay = doctorWorkDays.find(work => work.work_date === dateStr);
-    const container = document.getElementById('time-slots-container');
-    
-    if (workDay) {
-        container.innerHTML = `
-            <div class="alert alert-success">
-                <i class="fas fa-check-circle"></i>
-                <div>
-                    <strong>Data selecionada: ${formatDate(dateStr)}</strong>
-                    <p>Horário de atendimento: ${workDay.start_time.substring(0,5)} às ${workDay.end_time.substring(0,5)}</p>
-                    <p>O médico estará disponível durante todo este período.</p>
-                </div>
-            </div>
-        `;
-    }
-}
 
         async function confirmAppointment() {
             if (!selectedDoctor || !selectedDate) {
                 alert('Por favor, selecione médico e data');
                 return;
             }
-            
+
             const whatsapp = document.getElementById('appointment-whatsapp').value;
             if (!whatsapp) {
                 alert('Por favor, informe seu WhatsApp para contato');
                 return;
             }
-            
+
             const token = localStorage.getItem('token');
             const notes = document.getElementById('appointment-notes').value;
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/appointments`, {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         doctor_id: selectedDoctor.id,
                         appointment_date: selectedDate,
-                        appointment_time: '08:00', // Horário fixo
+                        appointment_time: '08:00',
                         notes: notes,
                         whatsapp: whatsapp
                     })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) throw new Error(data.error);
-                
+
                 alert('Consulta agendada com sucesso!');
-                
+
                 // Resetar seleção
                 selectedDoctor = null;
                 selectedDate = null;
-                
+
                 // Atualizar a lista de agendamentos
                 loadPatientAppointments();
-                
+
                 // Voltar para a lista de médicos
                 document.getElementById('schedule-details').classList.add('hidden');
                 document.getElementById('appointment-notes').value = '';
@@ -2630,160 +3142,142 @@ calendarDays.forEach(date => {
             document.getElementById('appointment-whatsapp').value = '';
         }
 
-    // Função para cancelar agendamento - CORRIGIDA
-async function cancelAppointment(appointmentId) {
-    if (!confirm('Tem certeza que deseja cancelar este agendamento?')) return;
-    
-    const token = localStorage.getItem('token');
-    
-    try {
-        console.log('Cancelando agendamento ID:', appointmentId);
-        
-        const response = await fetch(`${API_URL}/api/appointments/${appointmentId}/cancel`, {
-            method: 'POST',
-            headers: { 
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        const responseText = await response.text();
-        console.log('Resposta do cancelamento:', responseText);
-        
-        if (!response.ok) {
-            let errorData;
-            try {
-                errorData = JSON.parse(responseText);
-            } catch {
-                errorData = { error: responseText };
-            }
-            throw new Error(errorData.error || 'Erro ao cancelar agendamento');
-        }
-        
-        alert('Agendamento cancelado com sucesso!');
-        loadPatientAppointments();
-    } catch (error) {
-        console.error('Erro detalhado:', error);
-        alert('Erro ao cancelar agendamento: ' + error.message);
-    }
-}
-// Função para atualizar status do agendamento no admin - CORRIGIDA
-// Função para cancelar agendamento - CORRIGIDA
-async function cancelAppointment(appointmentId) {
-    if (!confirm('Tem certeza que deseja cancelar este agendamento?')) return;
-    
-    const token = localStorage.getItem('token');
-    
-    try {
-        console.log('Cancelando agendamento ID:', appointmentId);
-        
-        const response = await fetch(`${API_URL}/api/appointments/${appointmentId}/cancel`, {
-            method: 'POST',
-            headers: { 
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        const responseText = await response.text();
-        console.log('Resposta do cancelamento:', responseText);
-        
-        if (!response.ok) {
-            let errorData;
-            try {
-                errorData = JSON.parse(responseText);
-            } catch {
-                errorData = { error: responseText };
-            }
-            throw new Error(errorData.error || 'Erro ao cancelar agendamento');
-        }
-        
-        alert('Agendamento cancelado com sucesso!');
-        loadPatientAppointments();
-    } catch (error) {
-        console.error('Erro detalhado:', error);
-        alert('Erro ao cancelar agendamento: ' + error.message);
-    }
-}
+        async function cancelAppointment(appointmentId) {
+            if (!confirm('Tem certeza que deseja cancelar este agendamento?')) return;
 
-// Função para atualizar status do agendamento no admin - CORRIGIDA
-async function updateAppointmentStatus(appointmentId, status) {
-    const token = localStorage.getItem('adminToken');
-    
-    try {
-        console.log('Atualizando status do agendamento:', appointmentId, status);
-        
-        const response = await fetch(`${API_URL}/api/admin/appointments/${appointmentId}/status`, {
-            method: 'PUT',
-            headers: { 
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ status })
-        });
-        
-        const responseText = await response.text();
-        console.log('Resposta da atualização:', responseText);
-        
-        if (!response.ok) {
-            let errorData;
-            try {
-                errorData = JSON.parse(responseText);
-            } catch {
-                errorData = { error: responseText };
-            }
-            throw new Error(errorData.error || 'Erro ao atualizar agendamento');
-        }
-        
-        alert('Status atualizado com sucesso!');
-        loadAdminAppointments();
-    } catch (error) {
-        console.error('Erro detalhado:', error);
-        alert('Erro ao atualizar agendamento: ' + error.message);
-    }
-}
+            const token = localStorage.getItem('token');
 
-// Função para carregar clientes no admin - CORRIGIDA
-async function loadClients() {
-    const token = localStorage.getItem('adminToken');
-    
-    try {
-        const response = await fetch(`${API_URL}/api/admin/clients`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`HTTP ${response.status}: ${errorText}`);
+            try {
+                console.log('Cancelando agendamento ID:', appointmentId);
+
+                const response = await fetch(`${API_URL}/api/appointments/${appointmentId}/cancel`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const responseText = await response.text();
+                console.log('Resposta do cancelamento:', responseText);
+
+                if (!response.ok) {
+                    let errorData;
+                    try {
+                        errorData = JSON.parse(responseText);
+                    } catch {
+                        errorData = { error: responseText };
+                    }
+                    throw new Error(errorData.error || 'Erro ao cancelar agendamento');
+                }
+
+                alert('Agendamento cancelado com sucesso!');
+                loadPatientAppointments();
+            } catch (error) {
+                console.error('Erro detalhado:', error);
+                alert('Erro ao cancelar agendamento: ' + error.message);
+            }
         }
-        
-        const data = await response.json();
-        
-        if (!response.ok) throw new Error(data.error || 'Erro ao carregar clientes');
-        
-        allClients = data;
-        renderClients(data);
-    } catch (error) {
-        console.error('Erro ao carregar clientes:', error);
-        const grid = document.getElementById('clients-grid');
-        grid.innerHTML = `
-            <div class="empty-state" style="grid-column: 1 / -1;">
-                <i class="fas fa-exclamation-triangle"></i>
-                <h3>Erro ao carregar clientes</h3>
-                <p>${error.message}</p>
-            </div>
-        `;
-    }
-}
+
+        // ============================================
+        // FUNÇÕES ADMIN DASHBOARD
+        // ============================================
+
+        function showAdminDashboard() {
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('patient-dashboard').classList.add('hidden');
+            document.getElementById('admin-dashboard').classList.remove('hidden');
             
+            // Inicializar dados da semana
+            initializeWeekDates();
+            
+            // Carregar dados do admin
+            loadClients();
+            loadAdminDoctors();
+            loadWorkDays();
+        }
+
+        function showAdminSection(section) {
+            // Remove active de todas as tabs
+            document.querySelectorAll('.admin-nav-item').forEach(item => item.classList.remove('active'));
+
+            // Adiciona active na tab clicada
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+
+            // Esconde todas as seções
+            document.getElementById('admin-section-clients').classList.add('hidden');
+            document.getElementById('admin-section-doctors').classList.add('hidden');
+            document.getElementById('admin-section-appointments').classList.add('hidden');
+            document.getElementById('admin-section-work-days').classList.add('hidden');
+
+            // Mostra a seção selecionada
+            document.getElementById(`admin-section-${section}`).classList.remove('hidden');
+
+            // Se for a seção de agendamentos, inicializar a semana
+            if (section === 'appointments') {
+                if (!currentWeekStart) {
+                    initializeWeekDates();
+                }
+                loadWeekAppointments();
+            }
+        }
+
+        async function loadClients() {
+            const token = localStorage.getItem('adminToken');
+
+            try {
+                const response = await fetch(`${API_URL}/api/admin/clients`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+
+                const data = await response.json();
+
+                if (!response.ok) throw new Error(data.error || 'Erro ao carregar clientes');
+
+                allClients = data;
+                renderClients(data);
+            } catch (error) {
+                console.error('Erro ao carregar clientes:', error);
+                const grid = document.getElementById('clients-grid');
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Erro ao carregar clientes</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderClients(clients) {
+            const grid = document.getElementById('clients-grid');
+
+            if (!clients || clients.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-users"></i>
+                        <h3>Nenhum cliente cadastrado</h3>
+                        <p>Não há pacientes cadastrados no sistema</p>
+                    </div>
+                `;
+                return;
+            }
+
             grid.innerHTML = clients.map(client => {
                 const cpfFormatted = client.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
                 return `
                     <div class="client-card" onclick="openClientModal('${client.id}')">
                         <div class="client-avatar">
-                            ${client.avatar_url 
-                                ? `<img src="${client.avatar_url}" alt="${client.name}">` 
-                                : '<i class="fas fa-user"></i>'}
+                            ${client.avatar_url
+                        ? `<img src="${client.avatar_url}" alt="${client.name}">`
+                        : '<i class="fas fa-user"></i>'}
                         </div>
                         <div class="client-info">
                             <h4>${client.name}</h4>
@@ -2794,12 +3288,12 @@ async function loadClients() {
                     </div>
                 `;
             }).join('');
-        
+        }
 
         function filterClients() {
             const search = document.getElementById('admin-search').value.toLowerCase();
-            const filtered = allClients.filter(client => 
-                client.name.toLowerCase().includes(search) || 
+            const filtered = allClients.filter(client =>
+                client.name.toLowerCase().includes(search) ||
                 client.cpf.includes(search.replace(/\D/g, '')) ||
                 (client.whatsapp && client.whatsapp.includes(search))
             );
@@ -2809,31 +3303,31 @@ async function loadClients() {
         async function openClientModal(clientId) {
             currentClientId = clientId;
             const token = localStorage.getItem('adminToken');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/clients/${clientId}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 const client = await response.json();
-                
+
                 if (!response.ok) throw new Error(client.error);
-                
+
                 const cpfFormatted = client.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-                
+
                 document.getElementById('modal-client-name').textContent = client.name;
                 document.getElementById('modal-client-fullname').textContent = client.name;
                 document.getElementById('modal-client-cpf').textContent = `CPF: ${cpfFormatted}`;
                 document.getElementById('modal-client-dob').textContent = `Nascimento: ${formatDate(client.dob)}`;
                 document.getElementById('modal-client-whatsapp').textContent = `WhatsApp: ${client.whatsapp || 'Não informado'}`;
-                
+
                 const avatarEl = document.getElementById('modal-client-avatar');
-                avatarEl.innerHTML = client.avatar_url 
-                    ? `<img src="${client.avatar_url}" alt="${client.name}">` 
+                avatarEl.innerHTML = client.avatar_url
+                    ? `<img src="${client.avatar_url}" alt="${client.name}">`
                     : '<i class="fas fa-user"></i>';
-                
+
                 document.getElementById('client-modal').classList.remove('hidden');
-                
+
                 showClientTab('info');
                 loadClientHistory();
                 loadClientExams();
@@ -2850,7 +3344,7 @@ async function loadClients() {
         function showClientTab(tab) {
             // Remove active de todas as tabs
             document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
-            
+
             // Adiciona active na tab clicada
             if (event) {
                 event.target.classList.add('active');
@@ -2858,30 +3352,30 @@ async function loadClients() {
                 // Se não houver evento, ativa a primeira tab
                 document.querySelector(`.tabs .tab:nth-child(${tab === 'info' ? 1 : tab === 'history' ? 2 : 3})`).classList.add('active');
             }
-            
+
             // Esconde todas as abas
             document.getElementById('client-tab-info').classList.add('hidden');
             document.getElementById('client-tab-history').classList.add('hidden');
             document.getElementById('client-tab-exams').classList.add('hidden');
-            
+
             // Mostra a aba selecionada
             document.getElementById(`client-tab-${tab}`).classList.remove('hidden');
         }
 
         async function loadClientHistory() {
             const token = localStorage.getItem('adminToken');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/clients/${currentClientId}/history`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) throw new Error(data.error);
-                
+
                 const tbody = document.getElementById('modal-history-table');
-                
+
                 if (data.length === 0) {
                     tbody.innerHTML = `
                         <tr>
@@ -2917,37 +3411,37 @@ async function loadClients() {
 
         async function saveHistory() {
             const token = localStorage.getItem('adminToken');
-            
+
             const date = document.getElementById('history-date').value;
             const time = document.getElementById('history-time').value;
             const type = document.getElementById('history-type').value;
             const notes = document.getElementById('history-notes').value;
-            
+
             if (!date || !type) {
                 alert('Preencha a data e o tipo da consulta');
                 return;
             }
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/clients/${currentClientId}/history`, {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ date, time, type, notes })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) throw new Error(data.error);
-                
+
                 hideAddHistoryForm();
                 document.getElementById('history-date').value = '';
                 document.getElementById('history-time').value = '';
                 document.getElementById('history-type').value = '';
                 document.getElementById('history-notes').value = '';
-                
+
                 loadClientHistory();
             } catch (error) {
                 alert('Erro ao salvar consulta: ' + error.message);
@@ -2956,20 +3450,20 @@ async function loadClients() {
 
         async function deleteHistory(historyId) {
             if (!confirm('Tem certeza que deseja excluir esta consulta?')) return;
-            
+
             const token = localStorage.getItem('adminToken');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/history/${historyId}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 if (!response.ok) {
                     const data = await response.json();
                     throw new Error(data.error);
                 }
-                
+
                 loadClientHistory();
             } catch (error) {
                 alert('Erro ao excluir consulta: ' + error.message);
@@ -2978,18 +3472,18 @@ async function loadClients() {
 
         async function loadClientExams() {
             const token = localStorage.getItem('adminToken');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/clients/${currentClientId}/exams`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) throw new Error(data.error);
-                
+
                 const container = document.getElementById('modal-exams-list');
-                
+
                 if (data.length === 0) {
                     container.innerHTML = `<p style="color: var(--text-muted);">Nenhum exame registrado</p>`;
                 } else {
@@ -3018,38 +3512,38 @@ async function loadClients() {
             const type = document.getElementById('exam-type').value;
             const fileInput = document.getElementById('exam-file');
             const file = fileInput.files[0];
-            
+
             if (!type || !file) {
                 alert('Selecione o tipo e o arquivo do exame');
                 return;
             }
-            
+
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            
+
             reader.onload = async () => {
                 const base64 = reader.result;
-                
+
                 try {
                     const response = await fetch(`${API_URL}/api/admin/clients/${currentClientId}/exams`, {
                         method: 'POST',
-                        headers: { 
+                        headers: {
                             'Authorization': `Bearer ${token}`,
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ 
+                        body: JSON.stringify({
                             type: type,
-                            file: base64 
+                            file: base64
                         })
                     });
-                    
+
                     const data = await response.json();
-                    
+
                     if (!response.ok) throw new Error(data.error);
-                    
+
                     document.getElementById('exam-type').value = '';
                     fileInput.value = '';
-                    
+
                     loadClientExams();
                     alert('Exame enviado com sucesso!');
                 } catch (error) {
@@ -3060,20 +3554,20 @@ async function loadClients() {
 
         async function deleteExam(examId) {
             if (!confirm('Tem certeza que deseja excluir este exame?')) return;
-            
+
             const token = localStorage.getItem('adminToken');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/exams/${examId}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 if (!response.ok) {
                     const data = await response.json();
                     throw new Error(data.error);
                 }
-                
+
                 loadClientExams();
             } catch (error) {
                 alert('Erro ao excluir exame: ' + error.message);
@@ -3083,31 +3577,31 @@ async function loadClients() {
         async function adminUploadAvatar(e) {
             const file = e.target.files[0];
             if (!file) return;
-            
+
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            
+
             reader.onload = async () => {
                 const base64 = reader.result;
                 const token = localStorage.getItem('adminToken');
-                
+
                 try {
                     const response = await fetch(`${API_URL}/api/admin/clients/${currentClientId}/avatar`, {
                         method: 'POST',
-                        headers: { 
+                        headers: {
                             'Authorization': `Bearer ${token}`,
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({ avatar: base64 })
                     });
-                    
+
                     const data = await response.json();
-                    
+
                     if (!response.ok) throw new Error(data.error);
-                    
+
                     const avatarEl = document.getElementById('modal-client-avatar');
                     avatarEl.innerHTML = `<img src="${data.avatar_url}" alt="Avatar">`;
-                    
+
                     loadClients();
                 } catch (error) {
                     alert('Erro ao enviar foto: ' + error.message);
@@ -3117,20 +3611,20 @@ async function loadClients() {
 
         async function deleteClient() {
             if (!confirm('Tem certeza que deseja excluir este cliente? Esta ação não pode ser desfeita.')) return;
-            
+
             const token = localStorage.getItem('adminToken');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/clients/${currentClientId}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 if (!response.ok) {
                     const data = await response.json();
                     throw new Error(data.error);
                 }
-                
+
                 closeClientModal();
                 loadClients();
             } catch (error) {
@@ -3143,21 +3637,26 @@ async function loadClients() {
         // ============================================
         async function loadAdminDoctors() {
             const token = localStorage.getItem('adminToken');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/doctors`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) throw new Error(data.error);
-                
+
                 renderAdminDoctors(data);
-                
+
                 // Atualizar select de médicos para dias de trabalho
                 const select = document.getElementById('work-day-doctor');
                 select.innerHTML = '<option value="">Selecione um médico</option>' +
+                    data.map(doctor => `<option value="${doctor.id}">${doctor.name} - ${doctor.specialty}</option>`).join('');
+
+                // Atualizar select de médicos para filtro de agendamentos
+                const appointmentDoctorSelect = document.getElementById('admin-appointment-doctor');
+                appointmentDoctorSelect.innerHTML = '<option value="">Todos os médicos</option>' +
                     data.map(doctor => `<option value="${doctor.id}">${doctor.name} - ${doctor.specialty}</option>`).join('');
             } catch (error) {
                 console.error('Erro ao carregar médicos:', error);
@@ -3166,7 +3665,7 @@ async function loadClients() {
 
         function renderAdminDoctors(doctors) {
             const container = document.getElementById('doctors-admin-list');
-            
+
             if (doctors.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
@@ -3177,14 +3676,14 @@ async function loadClients() {
                 `;
                 return;
             }
-            
+
             container.innerHTML = doctors.map(doctor => `
                 <div class="doctor-card">
                     <div class="doctor-avatar">
-                        ${doctor.avatar_url ? 
-                            `<img src="${doctor.avatar_url}" alt="${doctor.name}">` : 
-                            `<i class="fas fa-user-md"></i>`
-                        }
+                        ${doctor.avatar_url ?
+                    `<img src="${doctor.avatar_url}" alt="${doctor.name}">` :
+                    `<i class="fas fa-user-md"></i>`
+                }
                     </div>
                     <div class="doctor-info">
                         <h4>${doctor.name}</h4>
@@ -3222,7 +3721,7 @@ async function loadClients() {
         function previewDoctorAvatar(e) {
             const file = e.target.files[0];
             if (!file) return;
-            
+
             const reader = new FileReader();
             reader.onload = (e) => {
                 document.getElementById('doctor-avatar-img').src = e.target.result;
@@ -3233,19 +3732,19 @@ async function loadClients() {
 
         async function saveDoctor() {
             const token = localStorage.getItem('adminToken');
-            
+
             const name = document.getElementById('doctor-name').value;
             const specialty = document.getElementById('doctor-specialty').value;
             const description = document.getElementById('doctor-description').value;
             const phone = document.getElementById('doctor-phone').value;
             const email = document.getElementById('doctor-email').value;
             const avatarInput = document.getElementById('doctor-avatar');
-            
+
             if (!name || !specialty) {
                 alert('Nome e especialidade são obrigatórios');
                 return;
             }
-            
+
             let avatarBase64 = null;
             if (avatarInput.files[0]) {
                 const file = avatarInput.files[0];
@@ -3255,11 +3754,11 @@ async function loadClients() {
                     reader.readAsDataURL(file);
                 });
             }
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/doctors`, {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
@@ -3272,11 +3771,11 @@ async function loadClients() {
                         avatar: avatarBase64
                     })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) throw new Error(data.error);
-                
+
                 hideAddDoctorForm();
                 loadAdminDoctors();
             } catch (error) {
@@ -3286,23 +3785,23 @@ async function loadClients() {
 
         async function editDoctor(doctorId) {
             const token = localStorage.getItem('adminToken');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/doctors`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 const doctors = await response.json();
-                
+
                 if (!response.ok) throw new Error(doctors.error);
-                
+
                 const doctor = doctors.find(d => d.id === doctorId);
-                
+
                 if (!doctor) {
                     alert('Médico não encontrado');
                     return;
                 }
-                
+
                 document.getElementById('modal-doctor-name').textContent = doctor.name;
                 document.getElementById('edit-doctor-name').value = doctor.name;
                 document.getElementById('edit-doctor-specialty').value = doctor.specialty;
@@ -3310,15 +3809,15 @@ async function loadClients() {
                 document.getElementById('edit-doctor-phone').value = doctor.phone || '';
                 document.getElementById('edit-doctor-email').value = doctor.email || '';
                 document.getElementById('edit-doctor-active').value = doctor.active;
-                
+
                 // Limpar preview anterior
                 document.getElementById('edit-doctor-avatar-preview').classList.add('hidden');
-                
+
                 if (doctor.avatar_url) {
                     document.getElementById('edit-doctor-avatar-img').src = doctor.avatar_url;
                     document.getElementById('edit-doctor-avatar-preview').classList.remove('hidden');
                 }
-                
+
                 document.getElementById('doctor-modal').classList.remove('hidden');
                 document.getElementById('doctor-modal').dataset.doctorId = doctorId;
             } catch (error) {
@@ -3329,7 +3828,7 @@ async function loadClients() {
         function previewEditDoctorAvatar(e) {
             const file = e.target.files[0];
             if (!file) return;
-            
+
             const reader = new FileReader();
             reader.onload = (e) => {
                 document.getElementById('edit-doctor-avatar-img').src = e.target.result;
@@ -3345,7 +3844,7 @@ async function loadClients() {
         async function updateDoctor() {
             const doctorId = document.getElementById('doctor-modal').dataset.doctorId;
             const token = localStorage.getItem('adminToken');
-            
+
             const name = document.getElementById('edit-doctor-name').value;
             const specialty = document.getElementById('edit-doctor-specialty').value;
             const description = document.getElementById('edit-doctor-description').value;
@@ -3353,12 +3852,12 @@ async function loadClients() {
             const email = document.getElementById('edit-doctor-email').value;
             const active = document.getElementById('edit-doctor-active').value === 'true';
             const avatarInput = document.getElementById('edit-doctor-avatar');
-            
+
             if (!name || !specialty) {
                 alert('Nome e especialidade são obrigatórios');
                 return;
             }
-            
+
             let avatarBase64 = null;
             if (avatarInput.files[0]) {
                 const file = avatarInput.files[0];
@@ -3368,11 +3867,11 @@ async function loadClients() {
                     reader.readAsDataURL(file);
                 });
             }
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/doctors/${doctorId}`, {
                     method: 'PUT',
-                    headers: { 
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
@@ -3386,11 +3885,11 @@ async function loadClients() {
                         avatar: avatarBase64
                     })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) throw new Error(data.error);
-                
+
                 closeDoctorModal();
                 loadAdminDoctors();
             } catch (error) {
@@ -3400,22 +3899,22 @@ async function loadClients() {
 
         async function deleteDoctor() {
             const doctorId = document.getElementById('doctor-modal').dataset.doctorId;
-            
+
             if (!confirm('Tem certeza que deseja excluir este médico? Esta ação não pode ser desfeita.')) return;
-            
+
             const token = localStorage.getItem('adminToken');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/doctors/${doctorId}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 if (!response.ok) {
                     const data = await response.json();
                     throw new Error(data.error);
                 }
-                
+
                 closeDoctorModal();
                 loadAdminDoctors();
             } catch (error) {
@@ -3424,136 +3923,22 @@ async function loadClients() {
         }
 
         // ============================================
-        // GERENCIAMENTO DE AGENDAMENTOS (ADMIN)
-        // ============================================
-        async function loadAdminAppointments() {
-            const token = localStorage.getItem('adminToken');
-            const status = document.getElementById('appointment-filter').value;
-            const date = document.getElementById('appointment-date-filter').value;
-            
-            let url = `${API_URL}/api/admin/appointments`;
-            if (status || date) {
-                const params = new URLSearchParams();
-                if (status) params.append('status', status);
-                if (date) params.append('date', date);
-                url += '?' + params.toString();
-            }
-            
-            try {
-                const response = await fetch(url, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                const data = await response.json();
-                
-                if (!response.ok) throw new Error(data.error);
-                
-                renderAdminAppointments(data);
-            } catch (error) {
-                console.error('Erro ao carregar agendamentos:', error);
-            }
-        }
-
-        function renderAdminAppointments(appointments) {
-            const container = document.getElementById('admin-appointments-list');
-            
-            if (appointments.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-calendar-times"></i>
-                        <h3>Nenhum agendamento encontrado</h3>
-                        <p>Não há agendamentos com os filtros selecionados</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = appointments.map(appointment => `
-                <div class="appointment-card ${appointment.status}">
-                    <div class="appointment-header">
-                        <div>
-                            <div class="appointment-time">${formatTime(appointment.appointment_time)}</div>
-                            <div class="appointment-date">${formatDate(appointment.appointment_date)}</div>
-                        </div>
-                        <div class="badge ${appointment.status === 'agendado' ? 'badge-success' : appointment.status === 'cancelado' ? 'badge-danger' : 'badge-info'}">
-                            ${appointment.status === 'agendado' ? 'Agendado' : appointment.status === 'cancelado' ? 'Cancelado' : 'Realizado'}
-                        </div>
-                    </div>
-                    <div class="appointment-doctor">
-                        <i class="fas fa-user-md"></i>
-                        <div>
-                            <strong>${appointment.doctors.name}</strong>
-                            <p>${appointment.doctors.specialty}</p>
-                        </div>
-                    </div>
-                    <div class="appointment-doctor">
-                        <i class="fas fa-user"></i>
-                        <div>
-                            <strong>${appointment.patients.name}</strong>
-                            <p>${appointment.patients.cpf}</p>
-                            <p><small>${appointment.patients.whatsapp || ''}</small></p>
-                        </div>
-                    </div>
-                    ${appointment.notes ? `<p><strong>Observações:</strong> ${appointment.notes}</p>` : ''}
-                    <div class="appointment-actions">
-                        ${appointment.status === 'agendado' ? `
-                            <button class="btn btn-success btn-sm" onclick="updateAppointmentStatus('${appointment.id}', 'realizado')">
-                                <i class="fas fa-check"></i> Marcar como Realizado
-                            </button>
-                            <button class="btn btn-danger btn-sm" onclick="updateAppointmentStatus('${appointment.id}', 'cancelado')">
-                                <i class="fas fa-times"></i> Cancelar
-                            </button>
-                        ` : ''}
-                        ${appointment.status === 'realizado' ? `
-                            <button class="btn btn-primary btn-sm" onclick="updateAppointmentStatus('${appointment.id}', 'agendado')">
-                                <i class="fas fa-undo"></i> Reabrir
-                            </button>
-                        ` : ''}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        async function updateAppointmentStatus(appointmentId, status) {
-            const token = localStorage.getItem('adminToken');
-            
-            try {
-                const response = await fetch(`${API_URL}/api/admin/appointments/${appointmentId}/status`, {
-                    method: 'PUT',
-                    headers: { 
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ status })
-                });
-                
-                const data = await response.json();
-                
-                if (!response.ok) throw new Error(data.error);
-                
-                loadAdminAppointments();
-            } catch (error) {
-                alert('Erro ao atualizar agendamento: ' + error.message);
-            }
-        }
-
-        // ============================================
         // GERENCIAMENTO DE DIAS DE TRABALHO
         // ============================================
         async function loadWorkDays() {
             const token = localStorage.getItem('adminToken');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/work-days`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) throw new Error(data.error);
-                
+
                 const container = document.getElementById('work-days-list');
-                
+
                 if (data.length === 0) {
                     container.innerHTML = `
                         <div class="empty-state">
@@ -3569,7 +3954,7 @@ async function loadClients() {
                                 <strong>${workDay.doctors?.name || 'Médico'}</strong> - ${formatDate(workDay.work_date)}
                             </div>
                             <div class="work-day-time">
-                                ${workDay.start_time.substring(0,5)} às ${workDay.end_time.substring(0,5)}
+                                ${workDay.start_time.substring(0, 5)} às ${workDay.end_time.substring(0, 5)}
                             </div>
                             <button class="btn btn-danger btn-sm mt-2" onclick="deleteWorkDay('${workDay.id}')">
                                 <i class="fas fa-trash"></i> Excluir
@@ -3590,21 +3975,21 @@ async function loadClients() {
 
         async function addWorkDay() {
             const token = localStorage.getItem('adminToken');
-            
+
             const doctorId = document.getElementById('work-day-doctor').value;
             const date = document.getElementById('work-day-date').value;
             const startTime = document.getElementById('work-day-start').value;
             const endTime = document.getElementById('work-day-end').value;
-            
+
             if (!doctorId || !date || !startTime || !endTime) {
                 alert('Todos os campos são obrigatórios');
                 return;
             }
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/doctor-work-days`, {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
@@ -3615,16 +4000,16 @@ async function loadClients() {
                         end_time: endTime
                     })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!response.ok) throw new Error(data.error);
-                
+
                 // Limpar formulário
                 document.getElementById('work-day-date').value = '';
                 document.getElementById('work-day-start').value = '';
                 document.getElementById('work-day-end').value = '';
-                
+
                 alert('Dia de trabalho adicionado com sucesso!');
                 loadWorkDays();
             } catch (error) {
@@ -3634,24 +4019,390 @@ async function loadClients() {
 
         async function deleteWorkDay(workDayId) {
             if (!confirm('Tem certeza que deseja excluir este dia de trabalho?')) return;
-            
+
             const token = localStorage.getItem('adminToken');
-            
+
             try {
                 const response = await fetch(`${API_URL}/api/admin/doctor-work-days/${workDayId}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 if (!response.ok) {
                     const data = await response.json();
                     throw new Error(data.error);
                 }
-                
+
                 loadWorkDays();
             } catch (error) {
                 alert('Erro ao excluir dia de trabalho: ' + error.message);
             }
+        }
+
+        // ============================================
+        // FUNÇÕES PARA CONTROLE DA SEMANA
+        // ============================================
+
+        function getWeekDates(startDate) {
+            const date = new Date(startDate);
+            const weekDates = [];
+
+            // Ajusta para segunda-feira
+            const day = date.getDay();
+            const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+            const monday = new Date(date.setDate(diff));
+
+            // Gera datas da semana (segunda a domingo)
+            for (let i = 0; i < 7; i++) {
+                const weekDate = new Date(monday);
+                weekDate.setDate(monday.getDate() + i);
+                weekDates.push(weekDate);
+            }
+
+            return weekDates;
+        }
+
+        function formatWeekDate(date) {
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        function formatWeekRange(startDate) {
+            const weekDates = getWeekDates(startDate);
+            const start = weekDates[0];
+            const end = weekDates[6];
+
+            const startFormatted = start.toLocaleDateString('pt-BR');
+            const endFormatted = end.toLocaleDateString('pt-BR');
+
+            return `${startFormatted} a ${endFormatted}`;
+        }
+
+        function initializeWeekDates() {
+            const today = new Date();
+            currentWeekStart = today;
+
+            // Atualiza o seletor de data
+            document.getElementById('week-date-selector').value = today.toISOString().split('T')[0];
+
+            // Atualiza as datas dos dias
+            updateWeekDates();
+        }
+
+        function updateWeekDates() {
+            const weekDates = getWeekDates(currentWeekStart);
+
+            // Atualiza o título da semana
+            document.getElementById('current-week-range').textContent = formatWeekRange(currentWeekStart);
+
+            // Atualiza as datas de cada dia
+            const dayElements = [
+                { id: 'monday-date', index: 0 },
+                { id: 'tuesday-date', index: 1 },
+                { id: 'wednesday-date', index: 2 },
+                { id: 'thursday-date', index: 3 },
+                { id: 'friday-date', index: 4 },
+                { id: 'saturday-date', index: 5 },
+                { id: 'sunday-date', index: 6 }
+            ];
+
+            dayElements.forEach(day => {
+                const dateElement = document.getElementById(day.id);
+                const date = weekDates[day.index];
+                dateElement.textContent = formatWeekDate(date);
+            });
+        }
+
+        function previousWeek() {
+            const newDate = new Date(currentWeekStart);
+            newDate.setDate(newDate.getDate() - 7);
+            currentWeekStart = newDate;
+            updateWeekDates();
+            loadWeekAppointments();
+        }
+
+        function nextWeek() {
+            const newDate = new Date(currentWeekStart);
+            newDate.setDate(newDate.getDate() + 7);
+            currentWeekStart = newDate;
+            updateWeekDates();
+            loadWeekAppointments();
+        }
+
+        // Atualizar semana quando o seletor de data mudar
+        document.getElementById('week-date-selector')?.addEventListener('change', function () {
+            if (this.value) {
+                currentWeekStart = new Date(this.value);
+                updateWeekDates();
+                loadWeekAppointments();
+            }
+        });
+
+        // ============================================
+        // CARREGAR AGENDAMENTOS DA SEMANA
+        // ============================================
+
+        async function loadWeekAppointments() {
+            const token = localStorage.getItem('adminToken');
+            const doctorId = document.getElementById('admin-appointment-doctor').value;
+            const status = document.getElementById('admin-appointment-status').value;
+            const search = document.getElementById('admin-appointment-search').value;
+
+            const weekDates = getWeekDates(currentWeekStart);
+
+            // Limpar containers
+            const dayContainers = [
+                'monday-appointments',
+                'tuesday-appointments',
+                'wednesday-appointments',
+                'thursday-appointments',
+                'friday-appointments',
+                'saturday-appointments',
+                'sunday-appointments'
+            ];
+
+            dayContainers.forEach(containerId => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+            });
+
+            let allAppointments = [];
+            let summary = {
+                total: 0,
+                scheduled: 0,
+                completed: 0,
+                cancelled: 0
+            };
+
+            try {
+                // Para cada dia da semana, buscar agendamentos
+                for (let i = 0; i < weekDates.length; i++) {
+                    const date = weekDates[i];
+                    const dateStr = date.toISOString().split('T')[0];
+
+                    let url = `${API_URL}/api/admin/appointments?date=${dateStr}`;
+                    if (doctorId) url += `&doctor_id=${doctorId}`;
+                    if (status) url += `&status=${status}`;
+                    if (search) url += `&search=${encodeURIComponent(search)}`;
+
+                    const response = await fetch(url, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`HTTP ${response.status}: ${errorText}`);
+                    }
+
+                    const data = await response.json();
+                    weekAppointments[dateStr] = data || [];
+
+                    // Adicionar ao total
+                    if (data && data.length > 0) {
+                        allAppointments = allAppointments.concat(data);
+                    }
+                }
+
+                // Atualizar resumo
+                if (allAppointments.length > 0) {
+                    summary.total = allAppointments.length;
+                    summary.scheduled = allAppointments.filter(a => a.status === 'agendado').length;
+                    summary.completed = allAppointments.filter(a => a.status === 'realizado').length;
+                    summary.cancelled = allAppointments.filter(a => a.status === 'cancelado').length;
+                }
+
+                // Atualizar UI
+                updateWeekSummary(summary);
+                renderWeekAppointments(weekDates);
+
+            } catch (error) {
+                console.error('Erro ao carregar agendamentos da semana:', error);
+
+                // Mostrar erro em todos os containers
+                dayContainers.forEach(containerId => {
+                    const container = document.getElementById(containerId);
+                    container.innerHTML = `
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>Erro ao carregar: ${error.message}</div>
+                </div>
+            `;
+                });
+            }
+        }
+
+        function updateWeekSummary(summary) {
+            document.getElementById('summary-total').textContent = summary.total;
+            document.getElementById('summary-scheduled').textContent = summary.scheduled;
+            document.getElementById('summary-completed').textContent = summary.completed;
+            document.getElementById('summary-cancelled').textContent = summary.cancelled;
+        }
+
+        function renderWeekAppointments(weekDates) {
+            const dayContainers = [
+                { containerId: 'monday-appointments', dateIndex: 0 },
+                { containerId: 'tuesday-appointments', dateIndex: 1 },
+                { containerId: 'wednesday-appointments', dateIndex: 2 },
+                { containerId: 'thursday-appointments', dateIndex: 3 },
+                { containerId: 'friday-appointments', dateIndex: 4 },
+                { containerId: 'saturday-appointments', dateIndex: 5 },
+                { containerId: 'sunday-appointments', dateIndex: 6 }
+            ];
+
+            dayContainers.forEach(day => {
+                const container = document.getElementById(day.containerId);
+                const date = weekDates[day.dateIndex];
+                const dateStr = date.toISOString().split('T')[0];
+                const appointments = weekAppointments[dateStr] || [];
+
+                if (appointments.length === 0) {
+                    container.innerHTML = `
+                <div class="empty-state" style="padding: 1rem;">
+                    <i class="fas fa-calendar-times"></i>
+                    <p>Nenhum agendamento</p>
+                </div>
+            `;
+                } else {
+                    container.innerHTML = appointments.map(appointment => {
+                        const statusBadge = appointment.status === 'agendado' ? 'badge-success' :
+                            appointment.status === 'realizado' ? 'badge-info' :
+                                'badge-danger';
+                        const statusText = appointment.status === 'agendado' ? 'Agendado' :
+                            appointment.status === 'realizado' ? 'Realizado' :
+                                'Cancelado';
+
+                        return `
+                    <div class="week-appointment-item ${appointment.status}">
+                        <div class="appointment-time">
+                            ${formatTime(appointment.appointment_time)}
+                            <span class="appointment-status-badge ${statusBadge}" style="float: right;">${statusText}</span>
+                        </div>
+                        <div class="appointment-patient-info">
+                            <strong>${appointment.patients?.name || 'N/A'}</strong><br>
+                            CPF: ${appointment.patients?.cpf || 'N/A'}<br>
+                            WhatsApp: ${appointment.patients?.whatsapp || 'N/A'}
+                        </div>
+                        <div class="appointment-doctor-info">
+                            <i class="fas fa-user-md"></i> ${appointment.doctors?.name || 'N/A'} - ${appointment.doctors?.specialty || 'N/A'}
+                        </div>
+                        ${appointment.notes ? `<p style="font-size: 0.7rem; color: var(--text-muted);"><strong>Obs:</strong> ${appointment.notes}</p>` : ''}
+                        <div class="appointment-actions-week">
+                            ${appointment.status === 'agendado' ? `
+                                <button class="btn btn-success btn-sm" onclick="updateAppointmentStatus('${appointment.id}', 'realizado')">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="updateAppointmentStatus('${appointment.id}', 'cancelado')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            ` : ''}
+                            ${appointment.status === 'realizado' ? `
+                                <button class="btn btn-primary btn-sm" onclick="updateAppointmentStatus('${appointment.id}', 'agendado')">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                            ` : ''}
+                            <button class="btn btn-secondary btn-sm" onclick="viewAppointmentDetails('${appointment.id}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                    }).join('');
+                }
+            });
+        }
+
+        // ============================================
+        // NOVA FUNÇÃO: ENVIAR LEMBRETES PARA UMA DATA ESPECÍFICA
+        // ============================================
+
+        async function sendRemindersForDate(dayOfWeek) {
+            const token = localStorage.getItem('adminToken');
+            
+            // Mapear o dia da semana para a data correspondente
+            const dayMapping = {
+                'monday': 0,
+                'tuesday': 1,
+                'wednesday': 2,
+                'thursday': 3,
+                'friday': 4,
+                'saturday': 5,
+                'sunday': 6
+            };
+            
+            const weekDates = getWeekDates(currentWeekStart);
+            const dateIndex = dayMapping[dayOfWeek];
+            const date = weekDates[dateIndex];
+            const dateStr = date.toISOString().split('T')[0];
+            
+            if (!confirm(`Enviar lembretes para ${formatWeekDate(date)}?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/admin/send-reminders`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ date: dateStr })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Erro ao enviar lembretes');
+                }
+
+                alert(`Lembretes enviados com sucesso para ${formatWeekDate(date)}!\n${data.message}`);
+            } catch (error) {
+                alert('Erro ao enviar lembretes: ' + error.message);
+            }
+        }
+
+        // ============================================
+        // ATUALIZAR FUNÇÕES EXISTENTES
+        // ============================================
+
+        async function updateAppointmentStatus(appointmentId, status) {
+            const token = localStorage.getItem('adminToken');
+
+            try {
+                console.log('Atualizando status do agendamento:', appointmentId, status);
+
+                const response = await fetch(`${API_URL}/api/admin/appointments/${appointmentId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status })
+                });
+
+                const responseText = await response.text();
+                console.log('Resposta da atualização:', responseText);
+
+                if (!response.ok) {
+                    let errorData;
+                    try {
+                        errorData = JSON.parse(responseText);
+                    } catch {
+                        errorData = { error: responseText };
+                    }
+                    throw new Error(errorData.error || 'Erro ao atualizar agendamento');
+                }
+
+                alert('Status atualizado com sucesso!');
+                // Recarregar agendamentos da semana
+                loadWeekAppointments();
+            } catch (error) {
+                console.error('Erro detalhado:', error);
+                alert('Erro ao atualizar agendamento: ' + error.message);
+            }
+        }
+
+        function viewAppointmentDetails(appointmentId) {
+            // Implementar visualização de detalhes do agendamento
+            alert('Funcionalidade de detalhes do agendamento será implementada em breve.');
         }
 
         // ============================================
@@ -3660,135 +4411,67 @@ async function loadClients() {
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
-            
+
             sidebar.classList.toggle('open');
             overlay.classList.toggle('hidden');
         }
+
         // ============================================
-// FUNÇÕES ADMIN DASHBOARD
-// ============================================
+        // FUNÇÕES DE PERFIL
+        // ============================================
 
-function showAdminDashboard() {
-    document.getElementById('auth-section').classList.add('hidden');
-    document.getElementById('patient-dashboard').classList.add('hidden');
-    document.getElementById('admin-dashboard').classList.remove('hidden');
-    
-    // Carregar dados do admin
-    loadClients();
-    loadAdminDoctors();
-    loadAdminAppointments();
-    loadWorkDays();
-}
+        async function uploadAvatar(e) {
+            const file = e.target.files[0];
+            if (!file) return;
 
-function showAdminSection(section) {
-    // Remove active de todas as tabs
-    document.querySelectorAll('.admin-nav-item').forEach(item => item.classList.remove('active'));
-    
-    // Adiciona active na tab clicada
-    if (event && event.currentTarget) {
-        event.currentTarget.classList.add('active');
-    }
-    
-    // Esconde todas as seções
-    document.getElementById('admin-section-clients').classList.add('hidden');
-    document.getElementById('admin-section-doctors').classList.add('hidden');
-    document.getElementById('admin-section-appointments').classList.add('hidden');
-    document.getElementById('admin-section-work-days').classList.add('hidden');
-    
-    // Mostra a seção selecionada
-    document.getElementById(`admin-section-${section}`).classList.remove('hidden');
-}
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
 
-// Função para renderizar clientes (já existe mas vamos verificar)
-function renderClients(clients) {
-    const grid = document.getElementById('clients-grid');
-    
-    if (!clients || clients.length === 0) {
-        grid.innerHTML = `
-            <div class="empty-state" style="grid-column: 1 / -1;">
-                <i class="fas fa-users"></i>
-                <h3>Nenhum cliente cadastrado</h3>
-                <p>Não há pacientes cadastrados no sistema</p>
-            </div>
-        `;
-        return;
-    }
-    
-    grid.innerHTML = clients.map(client => {
-        const cpfFormatted = client.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-        return `
-            <div class="client-card" onclick="openClientModal('${client.id}')">
-                <div class="client-avatar">
-                    ${client.avatar_url 
-                        ? `<img src="${client.avatar_url}" alt="${client.name}">` 
-                        : '<i class="fas fa-user"></i>'}
-                </div>
-                <div class="client-info">
-                    <h4>${client.name}</h4>
-                    <p>${cpfFormatted}</p>
-                    <p><small>${client.whatsapp || ''}</small></p>
-                </div>
-                <i class="fas fa-chevron-right" style="color: var(--text-muted);"></i>
-            </div>
-        `;
-    }).join('');
-}
+            reader.onload = async () => {
+                const base64 = reader.result;
+                const token = localStorage.getItem('token');
 
-// Função para download de exames
-function downloadExam(url, filename) {
-    // Se a URL já for absoluta, usa diretamente
-    if (url.startsWith('http')) {
-        window.open(url, '_blank');
-    } else {
-        // Se for relativa, constrói a URL completa
-        window.open(`${API_URL}${url}`, '_blank');
-    }
-}
+                try {
+                    const response = await fetch(`${API_URL}/api/patient/avatar`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ avatar: base64 })
+                    });
 
-// ============================================
-// FUNÇÕES DE PERFIL
-// ============================================
+                    const data = await response.json();
 
-async function uploadAvatar(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    
-    reader.onload = async () => {
-        const base64 = reader.result;
-        const token = localStorage.getItem('token');
-        
-        try {
-            const response = await fetch(`${API_URL}/api/patient/avatar`, {
-                method: 'POST',
-                headers: { 
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ avatar: base64 })
-            });
-            
-            const data = await response.json();
-            
-            if (!response.ok) throw new Error(data.error);
-            
-            // Atualizar a imagem em todos os lugares
-            document.querySelectorAll('.sidebar-avatar, .profile-avatar-large').forEach(el => {
-                el.innerHTML = `<img src="${data.avatar_url}" alt="Avatar">`;
-            });
-            
-            // Atualizar o currentUser
-            if (currentUser) {
-                currentUser.avatar_url = data.avatar_url;
-                localStorage.setItem('user', JSON.stringify(currentUser));
-            }
-        } catch (error) {
-            alert('Erro ao enviar foto: ' + error.message);
+                    if (!response.ok) throw new Error(data.error);
+
+                    // Atualizar a imagem em todos os lugares
+                    document.querySelectorAll('.sidebar-avatar, .profile-avatar-large').forEach(el => {
+                        el.innerHTML = `<img src="${data.avatar_url}" alt="Avatar">`;
+                    });
+
+                    // Atualizar o currentUser
+                    if (currentUser) {
+                        currentUser.avatar_url = data.avatar_url;
+                        localStorage.setItem('user', JSON.stringify(currentUser));
+                    }
+                } catch (error) {
+                    alert('Erro ao enviar foto: ' + error.message);
+                }
+            };
         }
-    };
-}
+
+        // Função para download de exames
+        function downloadExam(url, filename) {
+            // Se a URL já for absoluta, usa diretamente
+            if (url.startsWith('http')) {
+                window.open(url, '_blank');
+            } else {
+                // Se for relativa, constrói a URL completa
+                window.open(`${API_URL}${url}`, '_blank');
+            }
+        }
+
         // ============================================
         // INICIALIZAÇÃO
         // ============================================
@@ -3803,11 +4486,11 @@ async function uploadAvatar(e) {
                 }
                 return;
             }
-            
+
             // Verifica login de paciente
             const token = localStorage.getItem('token');
             const user = localStorage.getItem('user');
-            
+
             if (token && user) {
                 currentUser = JSON.parse(user);
                 showPatientDashboard();
@@ -3819,4 +4502,5 @@ async function uploadAvatar(e) {
         document.addEventListener('DOMContentLoaded', checkAuth);
     </script>
 </body>
+
 </html>
