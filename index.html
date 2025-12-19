@@ -8,6 +8,106 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed !important;
+            background-color: var(--text-muted) !important;
+        }
+
+        .btn-disabled:hover {
+            transform: none !important;
+            background-color: var(--text-muted) !important;
+        }
+
+        .time-slot {
+            cursor: pointer;
+            padding: 12px;
+            text-align: center;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-weight: 500;
+            background: white;
+        }
+
+        .time-slot:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .time-slot.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .time-slot.booked {
+            background: var(--background);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            border-color: var(--border);
+            opacity: 0.7;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .calendar-day.today {
+            background-color: var(--primary-light);
+            border: 2px solid var(--primary);
+            font-weight: bold;
+        }
+
+        .calendar-day.selected {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .calendar-day.available {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+
+        .calendar-day.past {
+            background-color: #f3f4f6;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .calendar-day-header {
+            font-weight: 600;
+            color: var(--text-muted);
+            padding: 0.75rem;
+            text-align: center;
+            background-color: var(--background);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-day {
+            padding: 0.75rem;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
         /* Week Grid Styles */
         .week-grid {
             display: grid;
@@ -1790,13 +1890,13 @@
                     </div>
 
                     <div class="card mt-4">
-                        <h3>Passo 3: Informações da consulta</h3>
+                        <h3>Passo 3: Escolha o horário</h3>
                         <div id="time-slots-container" class="mt-4">
                             <div class="alert alert-info">
                                 <i class="fas fa-clock"></i>
                                 <div>
                                     <strong>Horário de atendimento:</strong>
-                                    <p>O médico atenderá durante todo o horário de expediente na data selecionada.</p>
+                                    <p>Selecione um horário disponível abaixo</p>
                                 </div>
                             </div>
                         </div>
@@ -2421,6 +2521,7 @@
         let allSpecialties = [];
         let selectedDoctor = null;
         let selectedDate = null;
+        let selectedTime = null;
         let doctorWorkDays = [];
         let bookedSlots = [];
 
@@ -2433,6 +2534,14 @@
         // ============================================
         // UTILITÁRIOS
         // ============================================
+
+        function getDayName(date, locale = 'pt-BR') {
+            return date.toLocaleDateString(locale, { weekday: 'short' });
+        }
+
+        function getFullDayName(date, locale = 'pt-BR') {
+            return date.toLocaleDateString(locale, { weekday: 'long' });
+        }
         function formatCPF(input) {
             let value = input.value.replace(/\D/g, '');
             if (value.length > 11) value = value.slice(0, 11);
@@ -2951,6 +3060,7 @@
         async function selectDoctor(doctorId) {
             selectedDoctor = allDoctors.find(d => d.id === doctorId);
             selectedDate = null;
+            selectedTime = null;
 
             // Carregar dias de trabalho do médico
             const token = localStorage.getItem('token');
@@ -2965,9 +3075,6 @@
                 if (!response.ok) throw new Error(data.error);
 
                 doctorWorkDays = data;
-
-                // Carregar agendamentos existentes para verificar horários ocupados
-                bookedSlots = [];
 
                 // Mostrar calendário
                 showScheduleCalendar();
@@ -2986,9 +3093,18 @@
             today.setHours(0, 0, 0, 0);
             const calendarDays = [];
 
-            for (let i = 0; i < 30; i++) {
-                const date = new Date(today);
-                date.setDate(today.getDate() + i);
+            // Vamos criar um calendário completo começando no domingo da semana atual
+            // para garantir que os dias da semana fiquem alinhados corretamente
+
+            // Encontrar o domingo mais próximo (antes ou igual a hoje)
+            const startDate = new Date(today);
+            const dayOfWeek = startDate.getDay(); // 0 = domingo, 1 = segunda, etc.
+            startDate.setDate(startDate.getDate() - dayOfWeek);
+
+            // Gerar 42 dias (6 semanas) para um calendário completo
+            for (let i = 0; i < 42; i++) {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + i);
                 calendarDays.push(date);
             }
 
@@ -2997,32 +3113,20 @@
                 // Formatar data para YYYY-MM-DD
                 const dateStr = date.toISOString().split('T')[0];
                 return doctorWorkDays.some(workDay => {
-                    // Comparar as datas diretamente como strings
                     return workDay.work_date === dateStr;
                 });
             });
 
-            if (availableDates.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-calendar-times"></i>
-                        <h3>Nenhuma data disponível</h3>
-                        <p>Este médico não tem dias de trabalho disponíveis nos próximos 30 dias</p>
-                    </div>
-                `;
-                return;
-            }
-
             // Gerar calendário
             let calendarHTML = '<div class="calendar">';
 
-            // Cabeçalho dos dias da semana
+            // Cabeçalho dos dias da semana (corrigido)
             const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
             weekdays.forEach(day => {
                 calendarHTML += `<div class="calendar-day-header">${day}</div>`;
             });
 
-            // Dias do mês
+            // Dias do calendário
             calendarDays.forEach(date => {
                 const dateStr = date.toISOString().split('T')[0];
                 const isAvailable = doctorWorkDays.some(workDay => {
@@ -3030,64 +3134,267 @@
                 });
                 const isPast = date < today;
                 const isSelected = selectedDate === dateStr;
+                const isToday = date.toDateString() === today.toDateString();
 
                 let dayClass = 'calendar-day';
+                if (isToday) dayClass += ' today';
                 if (isPast) dayClass += ' past';
                 if (isAvailable) dayClass += ' available';
                 if (isSelected) dayClass += ' selected';
 
                 calendarHTML += `
-                    <div class="${dayClass}" 
-                         data-date="${dateStr}"
-                         onclick="${!isPast && isAvailable ? `selectDate('${dateStr}')` : ''}">
-                        ${date.getDate()}
-                        <small style="display: block; font-size: 0.7em; margin-top: 0.25rem;">${isAvailable ? 'Disponível' : ''}</small>
-                    </div>
-                `;
+            <div class="${dayClass}" 
+                 data-date="${dateStr}"
+                 onclick="${!isPast && isAvailable ? `selectDate('${dateStr}')` : ''}">
+                ${date.getDate()}
+                ${isToday ? '<div style="font-size: 0.6em; color: var(--primary);">Hoje</div>' : ''}
+                ${isAvailable && !isPast ? '<div style="font-size: 0.6em; color: var(--success);">Disponível</div>' : ''}
+            </div>
+        `;
             });
 
             calendarHTML += '</div>';
             container.innerHTML = calendarHTML;
+
+            // Adicionar estilo para o dia de hoje
+            const style = document.createElement('style');
+            style.textContent = `
+        .calendar-day.today {
+            background-color: var(--primary-light);
+            border: 2px solid var(--primary);
         }
-
-        function selectDate(dateStr) {
+        .calendar-day.other-month {
+            opacity: 0.5;
+        }
+    `;
+            document.head.appendChild(style);
+        }
+        async function selectDate(dateStr) {
             selectedDate = dateStr;
+            selectedTime = null;
 
-            // Atualizar seleção no calendário CORRETAMENTE
+            // Atualizar seleção no calendário
             document.querySelectorAll('.calendar-day').forEach(day => {
                 day.classList.remove('selected');
-                // Obter a data do atributo data-date
                 const dayDate = day.getAttribute('data-date');
                 if (dayDate === dateStr) {
                     day.classList.add('selected');
                 }
             });
 
-            // Mostrar informações do dia selecionado
+            // Mostrar informações do dia selecionado com o dia da semana correto
+            const selectedDateObj = new Date(dateStr + 'T00:00:00');
+            const dayName = getFullDayName(selectedDateObj);
+
+            // Verificar se há uma rota específica para buscar horários ocupados
+            // Se não existir, vamos usar uma abordagem diferente
+            const token = localStorage.getItem('token');
+
+            try {
+                // Primeiro, vamos tentar buscar os agendamentos do paciente atual
+                // para verificar se ele já tem agendamento nesse dia
+                const patientAppointmentsResponse = await fetch(`${API_URL}/api/patient/appointments`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (patientAppointmentsResponse.ok) {
+                    const patientAppointments = await patientAppointmentsResponse.json();
+
+                    // Filtrar agendamentos do paciente para este médico nesta data
+                    const patientBookedSlots = patientAppointments
+                        .filter(app =>
+                            app.doctor_id === selectedDoctor.id &&
+                            app.appointment_date === dateStr &&
+                            app.status === 'agendado'
+                        )
+                        .map(app => app.appointment_time.substring(0, 5));
+
+                    // Agora vamos tentar buscar todos os agendamentos para este médico nesta data
+                    // Vamos usar uma rota que não precise de admin
+                    try {
+                        // Esta rota pode não existir ainda, então vamos tratar o erro
+                        const allAppointmentsResponse = await fetch(
+                            `${API_URL}/api/appointments?doctor_id=${selectedDoctor.id}&date=${dateStr}`,
+                            { headers: { 'Authorization': `Bearer ${token}` } }
+                        );
+
+                        if (allAppointmentsResponse.ok) {
+                            const allAppointments = await allAppointmentsResponse.json();
+                            // Se a rota existir, usar os dados
+                            bookedSlots = allAppointments
+                                .filter(app => app.status === 'agendado')
+                                .map(app => app.appointment_time.substring(0, 5));
+                        } else {
+                            // Se a rota não existir, usar apenas os do paciente
+                            bookedSlots = patientBookedSlots;
+                        }
+                    } catch (error) {
+                        // Se houver erro, usar apenas os do paciente
+                        bookedSlots = patientBookedSlots;
+                        console.log('Usando apenas agendamentos do paciente:', bookedSlots);
+                    }
+                }
+
+                // Mostrar horários disponíveis
+                showAvailableTimeSlots(dateStr, dayName);
+
+            } catch (error) {
+                console.error('Erro ao buscar agendamentos:', error);
+                // Mesmo com erro, mostrar horários disponíveis (serão validados no backend ao confirmar)
+                showAvailableTimeSlots(dateStr, dayName);
+            }
+        }
+        function showAvailableTimeSlots(dateStr, dayName) {
             const workDay = doctorWorkDays.find(work => work.work_date === dateStr);
             const container = document.getElementById('time-slots-container');
 
-            if (workDay) {
+            if (!workDay) {
                 container.innerHTML = `
-                    <div class="alert alert-success">
-                        <i class="fas fa-check-circle"></i>
-                        <div>
-                            <strong>Data selecionada: ${formatDate(dateStr)}</strong>
-                            <p>Horário de atendimento: ${workDay.start_time.substring(0, 5)} às ${workDay.end_time.substring(0, 5)}</p>
-                            <p>O médico estará disponível durante todo este período.</p>
-                        </div>
-                    </div>
-                `;
+            <div class="alert alert-error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <strong>Data não disponível</strong>
+                    <p>Este médico não trabalha nesta data.</p>
+                </div>
+            </div>
+        `;
+                return;
+            }
+
+            // Gerar slots de horário a cada 30 minutos
+            const startTime = workDay.start_time;
+            const endTime = workDay.end_time;
+            const slots = [];
+
+            // Converter para objeto Date para manipulação
+            const start = new Date(`2000-01-01T${startTime}`);
+            const end = new Date(`2000-01-01T${endTime}`);
+
+            // Gerar slots de 30 em 30 minutos
+            let current = new Date(start);
+            while (current < end) {
+                const hours = current.getHours().toString().padStart(2, '0');
+                const minutes = current.getMinutes().toString().padStart(2, '0');
+                const timeSlot = `${hours}:${minutes}`;
+
+                // Verificar se o slot já está agendado
+                const isBooked = bookedSlots.includes(timeSlot);
+
+                slots.push({
+                    time: timeSlot,
+                    available: !isBooked
+                });
+
+                // Adicionar 30 minutos
+                current.setMinutes(current.getMinutes() + 30);
+            }
+
+            if (slots.length === 0) {
+                container.innerHTML = `
+            <div class="alert alert-error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <strong>Nenhum horário disponível</strong>
+                    <p>Todos os horários estão ocupados para esta data.</p>
+                </div>
+            </div>
+        `;
+                return;
+            }
+
+            let slotsHTML = `
+        <div class="alert alert-success">
+            <i class="fas fa-calendar-check"></i>
+            <div>
+                <strong>${dayName}, ${formatDate(dateStr)}</strong>
+                <p>Horário de atendimento: ${startTime.substring(0, 5)} às ${endTime.substring(0, 5)}</p>
+            </div>
+        </div>
+        <h4>Selecione um horário:</h4>
+        <div id="time-slots-list" class="time-slots">
+    `;
+
+            slots.forEach(slot => {
+                if (slot.available) {
+                    const isSelected = selectedTime === slot.time;
+                    slotsHTML += `
+                <div class="time-slot ${isSelected ? 'selected' : ''}" 
+                     data-time="${slot.time}"
+                     onclick="handleTimeSlotClick('${slot.time}')">
+                    ${slot.time}
+                </div>
+            `;
+                } else {
+                    slotsHTML += `
+                <div class="time-slot booked" title="Horário já agendado" data-time="${slot.time}">
+                    ${slot.time}
+                </div>
+            `;
+                }
+            });
+
+            slotsHTML += '</div>';
+            container.innerHTML = slotsHTML;
+        }
+
+        function handleTimeSlotClick(time) {
+            console.log('Clicou no horário:', time);
+
+            // Primeiro, remover a classe 'selected' de todos os slots
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+
+            // Encontrar o slot clicado e adicionar a classe 'selected'
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                if (slot.getAttribute('data-time') === time && !slot.classList.contains('booked')) {
+                    slot.classList.add('selected');
+                }
+            });
+
+            // Definir o horário selecionado
+            selectedTime = time;
+            console.log('Horário selecionado definido como:', selectedTime);
+
+            // Habilitar o botão de confirmação se todos os campos estiverem preenchidos
+            checkFormCompletion();
+        }
+
+        function checkFormCompletion() {
+            const whatsapp = document.getElementById('appointment-whatsapp').value;
+            const isComplete = selectedDoctor && selectedDate && selectedTime && whatsapp;
+
+            const confirmBtn = document.querySelector('button[onclick="confirmAppointment()"]');
+            if (confirmBtn) {
+                if (isComplete) {
+                    confirmBtn.disabled = false;
+                    confirmBtn.classList.remove('btn-disabled');
+                } else {
+                    confirmBtn.disabled = true;
+                    confirmBtn.classList.add('btn-disabled');
+                }
             }
         }
 
+
         async function confirmAppointment() {
+            console.log('=== CONFIRMAR AGENDAMENTO ===');
+            console.log('Médico:', selectedDoctor?.name);
+            console.log('Data:', selectedDate);
+            console.log('Horário:', selectedTime);
+            console.log('WhatsApp:', document.getElementById('appointment-whatsapp').value);
+
             if (!selectedDoctor || !selectedDate) {
                 alert('Por favor, selecione médico e data');
                 return;
             }
 
-            const whatsapp = document.getElementById('appointment-whatsapp').value;
+            if (!selectedTime) {
+                alert('Por favor, selecione um horário');
+                return;
+            }
+
+            const whatsapp = document.getElementById('appointment-whatsapp').value.trim();
             if (!whatsapp) {
                 alert('Por favor, informe seu WhatsApp para contato');
                 return;
@@ -3097,6 +3404,13 @@
             const notes = document.getElementById('appointment-notes').value;
 
             try {
+                console.log('Enviando para API:', {
+                    doctor_id: selectedDoctor.id,
+                    appointment_date: selectedDate,
+                    appointment_time: selectedTime,
+                    whatsapp: whatsapp
+                });
+
                 const response = await fetch(`${API_URL}/api/appointments`, {
                     method: 'POST',
                     headers: {
@@ -3106,21 +3420,36 @@
                     body: JSON.stringify({
                         doctor_id: selectedDoctor.id,
                         appointment_date: selectedDate,
-                        appointment_time: '08:00',
-                        notes: notes,
+                        appointment_time: selectedTime,
+                        notes: notes || '',
                         whatsapp: whatsapp
                     })
                 });
 
                 const data = await response.json();
+                console.log('Resposta da API:', data);
 
-                if (!response.ok) throw new Error(data.error);
+                if (!response.ok) {
+                    if (data.error && (data.error.includes('horário') || data.error.includes('já existe'))) {
+                        alert('❌ Este horário já está ocupado. Por favor, escolha outro horário.');
+                        // Marcar este horário como ocupado
+                        bookedSlots.push(selectedTime);
+                        // Atualizar a exibição
+                        const selectedDateObj = new Date(selectedDate + 'T00:00:00');
+                        const dayName = getFullDayName(selectedDateObj);
+                        showAvailableTimeSlots(selectedDate, dayName);
+                        return;
+                    }
+                    throw new Error(data.error || 'Erro ao agendar consulta');
+                }
 
-                alert('Consulta agendada com sucesso!');
+                alert('✅ Consulta agendada com sucesso! Você receberá um lembrete um dia antes da consulta.');
 
-                // Resetar seleção
+                // Resetar tudo
                 selectedDoctor = null;
                 selectedDate = null;
+                selectedTime = null;
+                bookedSlots = [];
 
                 // Atualizar a lista de agendamentos
                 loadPatientAppointments();
@@ -3129,7 +3458,9 @@
                 document.getElementById('schedule-details').classList.add('hidden');
                 document.getElementById('appointment-notes').value = '';
                 document.getElementById('appointment-whatsapp').value = '';
+
             } catch (error) {
+                console.error('Erro completo:', error);
                 alert('Erro ao agendar consulta: ' + error.message);
             }
         }
@@ -3137,6 +3468,7 @@
         function cancelSchedule() {
             selectedDoctor = null;
             selectedDate = null;
+            selectedTime = null;
             document.getElementById('schedule-details').classList.add('hidden');
             document.getElementById('appointment-notes').value = '';
             document.getElementById('appointment-whatsapp').value = '';
@@ -3179,6 +3511,20 @@
             }
         }
 
+        // Função de depuração - pode remover depois que funcionar
+        function debugTimeSlots() {
+            document.addEventListener('click', function (e) {
+                if (e.target.classList.contains('time-slot') || e.target.parentElement?.classList.contains('time-slot')) {
+                    console.log('Clique detectado em time-slot');
+                    console.log('Elemento:', e.target);
+                    console.log('Classe:', e.target.className);
+                    console.log('Data-time:', e.target.getAttribute('data-time'));
+                }
+            });
+        }
+
+        // Chame esta função depois do DOM carregar
+        document.addEventListener('DOMContentLoaded', debugTimeSlots);
         // ============================================
         // FUNÇÕES ADMIN DASHBOARD
         // ============================================
@@ -3187,10 +3533,10 @@
             document.getElementById('auth-section').classList.add('hidden');
             document.getElementById('patient-dashboard').classList.add('hidden');
             document.getElementById('admin-dashboard').classList.remove('hidden');
-            
+
             // Inicializar dados da semana
             initializeWeekDates();
-            
+
             // Carregar dados do admin
             loadClients();
             loadAdminDoctors();
@@ -4063,7 +4409,8 @@
         }
 
         function formatWeekDate(date) {
-            return date.toLocaleDateString('pt-BR');
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('pt-BR', options);
         }
 
         function formatWeekRange(startDate) {
@@ -4316,7 +4663,7 @@
 
         async function sendRemindersForDate(dayOfWeek) {
             const token = localStorage.getItem('adminToken');
-            
+
             // Mapear o dia da semana para a data correspondente
             const dayMapping = {
                 'monday': 0,
@@ -4327,12 +4674,12 @@
                 'saturday': 5,
                 'sunday': 6
             };
-            
+
             const weekDates = getWeekDates(currentWeekStart);
             const dateIndex = dayMapping[dayOfWeek];
             const date = weekDates[dateIndex];
             const dateStr = date.toISOString().split('T')[0];
-            
+
             if (!confirm(`Enviar lembretes para ${formatWeekDate(date)}?`)) {
                 return;
             }
@@ -4500,6 +4847,14 @@
         // Event listeners
         window.addEventListener('hashchange', checkAuth);
         document.addEventListener('DOMContentLoaded', checkAuth);
+        // Adicione isso após o carregamento do DOM
+        document.addEventListener('DOMContentLoaded', function () {
+            // Event listener para o campo WhatsApp
+            const whatsappInput = document.getElementById('appointment-whatsapp');
+            if (whatsappInput) {
+                whatsappInput.addEventListener('input', checkFormCompletion);
+            }
+        });
     </script>
 </body>
 
